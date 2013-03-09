@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+	<TextView
+	    android:id="@+id/game_won_text"
+	    style="?android:attr/textAppearanceMedium"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center_horizontal"
+	    android:padding="16dp"
+	    android:text="@string/game_won" />
+	
+	<TextView
+	    android:id="@+id/game_won_score"
+	    style="?android:attr/textAppearanceMedium"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center_horizontal"
+	    android:padding="16dp"
+	    android:text="@string/actionbar_score" />
+	
+	<Button
+	    android:id="@+id/game_won_continue"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center_horizontal"
+	    android:text="@string/button_continue" />
+
+</LinearLayout>

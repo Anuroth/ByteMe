@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ByteMe</string>
+    <string name="button_start_game">Start Game</string>
+    <string name="button_resume_game">Resume Game</string>
+    <string name="actionbar_pause">Pause Game</string>
+    <string name="actionbar_resume">Resume Game</string>
+    <string name="actionbar_level">Level: </string>
+    <string name="actionbar_score">Score: </string>
+    <string name="actionbar_lines_left">Lines left: </string>
+    <string name="game_won">WINNER WINNER CHICKEN DINNER!</string>
+    <string name="score_won">Your score is: </string>
+    <string name="game_lost">You have died a misserable death!</string>
+    <string name="button_continue">Continue</string>
+
+</resources>

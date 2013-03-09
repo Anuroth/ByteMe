@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OutOfGameFragment" >
+    
+	<TextView
+	    android:id="@+id/out_of_game"
+	    style="?android:attr/textAppearanceLarge"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="16dp" />
+	
+	<Button
+	    android:id="@+id/out_of_game_start_game"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+	    android:text="@string/button_start_game" />
+
+</RelativeLayout>

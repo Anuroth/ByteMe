@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item
+        android:id="@+id/actionbar_pause_resume"
+        android:title="@string/actionbar_pause"
+        android:showAsAction="always"
+    />
+    
+    <item
+        android:id="@+id/actionbar_level"
+        android:title="@string/actionbar_level"
+        android:showAsAction="always"
+        android:enabled="false"
+    />
+    
+    <item
+        android:id="@+id/actionbar_score"
+        android:title="@string/actionbar_score"
+        android:showAsAction="always"
+        android:enabled="false"
+    />
+    
+    <item
+        android:id="@+id/actionbar_lines_left"
+        android:title="@string/actionbar_lines_left"
+        android:showAsAction="always"
+        android:enabled="false"
+    />
+
+</menu>
