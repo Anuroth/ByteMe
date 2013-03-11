@@ -22,7 +22,7 @@ import android.support.v4.app.FragmentManager;
  * This activity also implements the required {@link GameListFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class GameActivity extends SherlockFragmentActivity implements GameMenuFragment.Callbacks,
+public class GameActivity extends SherlockFragmentActivity implements GameTypeSelectionFragment.Callbacks,
 		OutOfGameFragment.GameInit, InGameFragment.GameLogic, GameLogicFragment.UI,
 		GameLostDialogFragment.GameLostListener, GameWonDialogFragment.GameWonListener {
 
@@ -35,7 +35,7 @@ public class GameActivity extends SherlockFragmentActivity implements GameMenuFr
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game_list);
+		setContentView(R.layout.activity_game_type_selection);
 
 		if (findViewById(R.id.game_field_container) != null) {
 			// The detail container view will be present only in the
@@ -46,13 +46,13 @@ public class GameActivity extends SherlockFragmentActivity implements GameMenuFr
 
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
-			((GameMenuFragment) getSupportFragmentManager().findFragmentById(R.id.game_menu))
+			((GameTypeSelectionFragment) getSupportFragmentManager().findFragmentById(R.id.game_type_selection))
 					.setActivateOnItemClick(true);
 		}
 	}
 
 	/**
-	 * Callback method from {@link GameMenuFragment.Callbacks} indicating that
+	 * Callback method from {@link GameTypeSelectionFragment.Callbacks} indicating that
 	 * the item with the given ID was selected.
 	 */
 	@Override

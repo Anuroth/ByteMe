@@ -17,7 +17,8 @@ import android.support.v4.app.NavUtils;
  * a {@link GameDetailFragment}.
  */
 public class HandsetDeviceGameActivity extends SherlockFragmentActivity implements
-		OutOfGameFragment.GameInit, InGameFragment.GameLogic, GameLogicFragment.UI {
+		OutOfGameFragment.GameInit, InGameFragment.GameLogic, GameLogicFragment.UI,
+		GameLostDialogFragment.GameLostListener, GameWonDialogFragment.GameWonListener {
 
 	public static final String IN_GAME = "false";
 
@@ -129,7 +130,7 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 	public void displayLevel(int level) {
 		InGameFragment fragment = (InGameFragment) getSupportFragmentManager().findFragmentById(
 				R.id.game_field_container);
-		fragment.clearUIBoard();
+		fragment.updateActionbarLevel(level);
 	}
 
 	/**
@@ -140,7 +141,7 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 	public void displayScore(int score) {
 		InGameFragment fragment = (InGameFragment) getSupportFragmentManager().findFragmentById(
 				R.id.game_field_container);
-		fragment.clearUIBoard();
+		fragment.updateActionbarScore(score);
 	}
 
 	/**
@@ -151,7 +152,7 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 	public void displayLinesLeft(int linesLeft) {
 		InGameFragment fragment = (InGameFragment) getSupportFragmentManager().findFragmentById(
 				R.id.game_field_container);
-		fragment.clearUIBoard();
+		fragment.updateActionbarLinesLeft(linesLeft);
 	}
 
 	/**
@@ -160,7 +161,9 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 	 */
 	@Override
 	public void displayWinScreen(int score) {
-
+		GameWonDialogFragment winScreen = GameWonDialogFragment.newInstance(score);
+		winScreen.setCancelable(false);
+		winScreen.show(getSupportFragmentManager(), "GameWonDialogFragment");
 	}
 
 	/**
@@ -169,7 +172,27 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 	 */
 	@Override
 	public void displayLostScreen(int level, int score) {
+		GameLostDialogFragment lostScreen = GameLostDialogFragment.newInstance(level, score);
+		lostScreen.setCancelable(false);
+		lostScreen.show(getSupportFragmentManager(), "GameLostDialogFragment");
+	}
 
+	/**
+	 * Callback method from {@link GameLostDialogFragment.GameLostListener}
+	 * which is used to display the lost screen.
+	 */
+	@Override
+	public void onGameLostDialogContinueClick() {
+		this.finish();
+	}
+
+	/**
+	 * Callback method from {@link GameWonDialogFragment.GameWonListener} which
+	 * is used to display the win screen.
+	 */
+	@Override
+	public void onGameWonDialogContinueClick() {
+		this.finish();
 	}
 
 	/**
