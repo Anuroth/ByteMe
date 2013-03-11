@@ -24,7 +24,7 @@
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="7"
-	        android:background="#00ff00"
+	        android:background="#4A4A4A"
 	        android:gravity="bottom"
 	        android:weightSum="10"
 	        android:orientation="vertical" >
@@ -35,7 +35,7 @@
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="3"
-	        android:background="#ff0000"
+	        android:background="#3A3A3A"
 	        android:gravity="bottom"
 	        android:weightSum="10"
 	        android:orientation="vertical" >

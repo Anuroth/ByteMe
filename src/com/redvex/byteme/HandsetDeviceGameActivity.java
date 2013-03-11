@@ -83,10 +83,12 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 	 * start the InGameDetailFragment.
 	 */
 	public void startGame(String gameType) {
-		Intent detailIntent = getIntent();
-		detailIntent.putExtra(InGameFragment.GAME_TYPE, gameType);
-		detailIntent.putExtra(HandsetDeviceGameActivity.IN_GAME, true);
-		recreate();
+		Bundle arguments = new Bundle();
+		arguments.putString(InGameFragment.GAME_TYPE, gameType);
+		InGameFragment fragment = new InGameFragment();
+		fragment.setArguments(arguments);
+		getSupportFragmentManager().beginTransaction().replace(R.id.game_field_container, fragment)
+				.addToBackStack(null).commit();
 	}
 
 	/**

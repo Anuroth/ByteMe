@@ -252,10 +252,13 @@ public class GameLogicFragment extends SherlockFragment {
 			}
 
 			// If the first line has already been solved and the user
-			// cleared the whole board two new rows are added.
+			// cleared the whole board two new rows are added. Also the
+			// timer of the gameLoop is reseted.
 			if (mGame.getTotalRowsKilled() != 1 && mGame.getActiveRows() == 0) {
+				mHandler.removeCallbacks(mRunnable);
 				addRow();
 				addRow();
+				mHandler.postDelayed(mRunnable, mGame.getTimeInterval());
 			}
 		}
 	}

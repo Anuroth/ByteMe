@@ -8,5 +8,7 @@
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
     <item name="activity_game_type_selection" type="layout">@layout/activity_game_twopane</item>
+    <!-- On Large screens a 4x4 hex keyboard layout is used otherwise a 5x3. -->
+    <item name="hex" type="xml">@xml/hex_4x4</item>
 
 </resources>

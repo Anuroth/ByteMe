@@ -17,6 +17,7 @@ import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,7 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.LinearLayout;
 
 public class InGameFragment extends SherlockFragment implements OnKeyboardActionListener,
@@ -39,8 +40,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 * Arrays containing the current rows of the UI.
 	 */
 	private ArrayList<LinearLayout> sBinaryRow = null;
-	private ArrayList<Button> sDecimalRow = null;
-	private ArrayList<Button> sHexadecimalRow = null;
+	private ArrayList<TextView> sDecimalRow = null;
+	private ArrayList<TextView> sHexadecimalRow = null;
 
 	/**
 	 * The keyboard for the decimal and hexadecimal rows.
@@ -50,9 +51,9 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	private Keyboard mKeyboardHex = null;
 
 	/**
-	 * Button which has currently the keyboard focus
+	 * TextView which has currently the keyboard focus
 	 */
-	private Button mCurrentButton = null;
+	private TextView mCurrentTextView = null;
 
 	private String mActionbarLevel = "";
 	private String mActionbarScore = "";
@@ -116,8 +117,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 */
 	private void initiateUIRows() {
 		sBinaryRow = new ArrayList<LinearLayout>();
-		sDecimalRow = new ArrayList<Button>();
-		sHexadecimalRow = new ArrayList<Button>();
+		sDecimalRow = new ArrayList<TextView>();
+		sHexadecimalRow = new ArrayList<TextView>();
 	}
 
 	/**
@@ -134,22 +135,24 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			newBinRow.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0,
 					1.0f));
 
-			// Each digit in the binary row is represented by a single button.
+			// Each digit in the binary row is represented by a single TextView.
 			for (int i = 0; i != 8; i++) {
-				Button newBinButton = new Button(getActivity());
+				TextView newBinTextView = new TextView(getActivity());
 
-				newBinButton.setLayoutParams(new LinearLayout.LayoutParams(0,
+				newBinTextView.setLayoutParams(new LinearLayout.LayoutParams(0,
 						LayoutParams.MATCH_PARENT, 1.0f));
+				newBinTextView.setGravity(Gravity.CENTER);
+				
 				try {
-					newBinButton.setText(binText.get(i));
+					newBinTextView.setText(binText.get(i));
 				} catch (IndexOutOfBoundsException e) {
 					throw new IndexOutOfBoundsException(e.getMessage());
 				}
-				newBinButton.setId(i);
+				newBinTextView.setId(i);
 
-				newBinButton.setOnClickListener(new View.OnClickListener() {
+				newBinTextView.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View view) {
-						Button clickedBinButton = (Button) view;
+						TextView clickedBinTextView = (TextView) view;
 
 						// If the keyboard of a decimal or hexadecimal row is
 						// visible it's set to View.INVISIBLE.
@@ -158,19 +161,19 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 						}
 
 						// The current bit is swapped.
-						if (clickedBinButton.getText().toString().equals("0")) {
-							clickedBinButton.setText("1");
+						if (clickedBinTextView.getText().toString().equals("0")) {
+							clickedBinTextView.setText("1");
 						} else {
-							clickedBinButton.setText("0");
+							clickedBinTextView.setText("0");
 						}
 
 						// The update of the row is send to the GameLogic.
-						updateRow(sBinaryRow.indexOf(clickedBinButton.getParent()));
+						updateRow(sBinaryRow.indexOf(clickedBinTextView.getParent()));
 					}
 				});
 
-				newBinButton.setEnabled(!fixedBinRow);
-				newBinRow.addView(newBinButton);
+				newBinTextView.setEnabled(!fixedBinRow);
+				newBinRow.addView(newBinTextView);
 			}
 
 			try {
@@ -192,7 +195,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 */
 	private void addUIDecimalRow(LinearLayout decField, String decText, boolean fixedDecRow) {
 		if (sDecimalRow.size() < 10) {
-			Button newDecRow = new Button(getActivity());
+			TextView newDecRow = new TextView(getActivity());
 
 			if (fixedDecRow) {
 				newDecRow.setText(decText);
@@ -201,11 +204,12 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			}
 			newDecRow.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0,
 					1.0f));
+			newDecRow.setGravity(Gravity.CENTER);
 
 			newDecRow.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View view) {
-					// Getting the Button
-					mCurrentButton = (Button) view;
+					// Getting the TextView
+					mCurrentTextView = (TextView) view;
 
 					try {
 						mKeyboardView.setKeyboard(mKeyboardDec);
@@ -241,7 +245,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 */
 	private void addUIHexadecimalRow(LinearLayout hexField, String hexText, boolean fixedHexRow) {
 		if (sHexadecimalRow.size() < 10) {
-			Button newHexRow = new Button(getActivity());
+			TextView newHexRow = new TextView(getActivity());
 
 			if (fixedHexRow) {
 				newHexRow.setText(hexText);
@@ -250,11 +254,12 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			}
 			newHexRow.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0,
 					1.0f));
+			newHexRow.setGravity(Gravity.CENTER);
 
 			newHexRow.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View view) {
-					// Getting the Button
-					mCurrentButton = (Button) view;
+					// Getting the TextView
+					mCurrentTextView = (TextView) view;
 
 					try {
 						mKeyboardView.setKeyboard(mKeyboardHex);
@@ -334,17 +339,17 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				throw new IllegalStateException("No valid game type in GAME_TYPE.");
 			}
 
-			if (mCurrentButton != null) {
-				mCurrentButton.getViewTreeObserver().addOnGlobalLayoutListener(
+			if (mCurrentTextView != null) {
+				mCurrentTextView.getViewTreeObserver().addOnGlobalLayoutListener(
 						new ViewTreeObserver.OnGlobalLayoutListener() {
 							@SuppressLint("NewApi")
 							@Override
 							public void onGlobalLayout() {
 								if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-									mCurrentButton.getViewTreeObserver()
+									mCurrentTextView.getViewTreeObserver()
 											.removeOnGlobalLayoutListener(this);
 								} else {
-									mCurrentButton.getViewTreeObserver()
+									mCurrentTextView.getViewTreeObserver()
 											.removeGlobalOnLayoutListener(this);
 								}
 
@@ -431,7 +436,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 	/**
 	 * When the fragment was send to the background ,by e.g. pressing the home
-	 * button, and it returns there are rows in the game fields which aren't
+	 * TextView, and it returns there are rows in the game fields which aren't
 	 * stored in sBinaryRow, sDecimalRow, sHexadecimalRow. Therefore the rows
 	 * aren't deleted by just calling removeUIRow, but by deleting all views
 	 * contained in the game fields.
@@ -505,9 +510,9 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 			for (int i = 0; i != 8; i++) {
 				if (index < sBinaryRow.size()) {
-					Button tempButton = (Button) sBinaryRow.get(index).getChildAt(i);
-					binRowStrings.add(tempButton.getText().toString());
-					fixedBinRow = !tempButton.isEnabled();
+					TextView tempTextView = (TextView) sBinaryRow.get(index).getChildAt(i);
+					binRowStrings.add(tempTextView.getText().toString());
+					fixedBinRow = !tempTextView.isEnabled();
 				} else {
 					binRowStrings.add("0");
 				}
@@ -538,9 +543,9 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	}
 
 	private void moveKeyboard() {
-		if (mCurrentButton != null) {
-			float widthButton = (float) mCurrentButton.getWidth();
-			float heightButton = (float) mCurrentButton.getHeight();
+		if (mCurrentTextView != null) {
+			float widthTextView = (float) mCurrentTextView.getWidth();
+			float heightTextView = (float) mCurrentTextView.getHeight();
 
 			float widthKeyboard;
 			float heightKeyboard;
@@ -554,22 +559,22 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			}
 
 			// Default is to expand the keyboard to the right top.
-			// The x value is made up of the x position of the mCurrentButton.
+			// The x value is made up of the x position of the mCurrentTextView.
 			// Since
-			// this button is embedded in a LinearLayout, the x position of the
+			// this TextView is embedded in a LinearLayout, the x position of the
 			// LinearLayout has to be added to the x value of the
-			// mCurrentButton.
-			// Now x is at the beginning of the mCurrentButton. To position the
-			// keyboard in the middle of the button half the width has to be
+			// mCurrentTextView.
+			// Now x is at the beginning of the mCurrentTextView. To position the
+			// keyboard in the middle of the TextView half the width has to be
 			// added.
 			// To position the bottom of the keyboard at the top of
-			// mCurrentButton
+			// mCurrentTextView
 			// the height of the keyboard has to be subtracted from the y
 			// position
-			// of mCurrentButton.
-			float x = mCurrentButton.getX() + ((LinearLayout) mCurrentButton.getParent()).getX()
-					+ (widthButton / 2);
-			float y = mCurrentButton.getY() - heightKeyboard;
+			// of mCurrentTextView.
+			float x = mCurrentTextView.getX() + ((LinearLayout) mCurrentTextView.getParent()).getX()
+					+ (widthTextView / 2);
+			float y = mCurrentTextView.getY() - heightKeyboard;
 
 			// Checks if the left/right expansion of the keyboard has to be
 			// changed
@@ -580,10 +585,10 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				// Checks if the top/bottom expansion of the keyboard has to be
 				// changed from top to bottom.
 				if (y < 0) {
-					y += heightKeyboard + heightButton;
+					y += heightKeyboard + heightTextView;
 				}
 			} else if (y < heightKeyboard) {
-				y += heightKeyboard + heightButton;
+				y += heightKeyboard + heightTextView;
 			}
 
 			mKeyboardView.setX(x);
@@ -628,6 +633,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				item.setTitle(getString(R.string.actionbar_resume));
 				mGameLogic.pauseGameLogic();
 				getActivity().findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
+				mKeyboardView.setVisibility(View.INVISIBLE);
 			} else {
 				item.setTitle(getString(R.string.actionbar_pause));
 				mGameLogic.startGameLogic(getArguments().getString(GAME_TYPE));
@@ -745,11 +751,11 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	public void onKey(int arg0, int[] arg1) {
 		switch (arg0) {
 		case -5:
-			// If the Text field of mCurrentButton contains characters the last
+			// If the Text field of mCurrentTextView contains characters the last
 			// one gets deleted.
-			if (mCurrentButton.getText().toString().length() > 0) {
-				mCurrentButton.setText(mCurrentButton.getText().toString()
-						.substring(0, mCurrentButton.getText().toString().length() - 1));
+			if (mCurrentTextView.getText().toString().length() > 0) {
+				mCurrentTextView.setText(mCurrentTextView.getText().toString()
+						.substring(0, mCurrentTextView.getText().toString().length() - 1));
 			}
 			break;
 		case 10:
@@ -759,9 +765,9 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 			// The update of the row is sent to the GameLogic.
 			if (mKeyboardView.getKeyboard().equals(mKeyboardDec)) {
-				updateRow(sDecimalRow.indexOf(mCurrentButton));
+				updateRow(sDecimalRow.indexOf(mCurrentTextView));
 			} else if (mKeyboardView.getKeyboard().equals(mKeyboardHex)) {
-				updateRow(sHexadecimalRow.indexOf(mCurrentButton));
+				updateRow(sHexadecimalRow.indexOf(mCurrentTextView));
 			}
 
 			break;
@@ -770,14 +776,14 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				// The maximum number represented by one byte in decimal
 				// notation is 255. Therefore just three digits are allowed at a
 				// decimal row.
-				if (mCurrentButton.getText().length() < 3) {
-					mCurrentButton.append(Character.toString((char) arg0));
+				if (mCurrentTextView.getText().length() < 3) {
+					mCurrentTextView.append(Character.toString((char) arg0));
 				}
 			} else if (mKeyboardView.getKeyboard().equals(mKeyboardHex)) {
 				// In hexadecimal notation it's 0xFF. Therefore 2 digits are
 				// allowed.
-				if (mCurrentButton.getText().length() < 2) {
-					mCurrentButton.append(Character.toString((char) arg0));
+				if (mCurrentTextView.getText().length() < 2) {
+					mCurrentTextView.append(Character.toString((char) arg0));
 				}
 			}
 		}

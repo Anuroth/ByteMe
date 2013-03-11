@@ -142,17 +142,17 @@ public class LevelController {
 		switch (mLevel) {
 		case 1:
 			mRowsLeftAtLevel = 16;
-			mRange = 128;
+			mRange = 64;
 			mTimeInterval = 10000;
 			break;
 		case 2:
 			mRowsLeftAtLevel = 18;
-			mRange = 256;
+			mRange = 128;
 			mTimeInterval = 10000;
 			break;
 		case 3:
 			mRowsLeftAtLevel = 20;
-			mRange = 256;
+			mRange = 192;
 			mTimeInterval = 95000;
 			break;
 		case 4:

@@ -72,7 +72,7 @@ public class Game {
 	}
 
 	public GameRow addRow() {
-		if (mActiveRows == mMaxActiveRows) {
+		if (mActiveRows >= mMaxActiveRows) {
 			mLost = true;
 		}
 
@@ -93,6 +93,7 @@ public class Game {
 		if (mRowsLeftAtLevel == 0) {
 			mLevel++;
 			mLevelController.setLevel(mLevel);
+			mActiveRows = 0;
 			mRowsLeftAtLevel = mLevelController.getRowsLeftAtLevel();
 
 			if (mRowsLeftAtLevel == 0) {
