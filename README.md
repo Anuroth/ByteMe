@@ -35,7 +35,7 @@ The ToDo List may be extened before the final version.
 Contributers:
 -------------
 * Anuroth
-* iLLmaT
+* illmat
 
 Copyright (C) 2013 ByteMe project
 ---------------------------------
