@@ -153,32 +153,32 @@ public class LevelController {
 		case 3:
 			mRowsLeftAtLevel = 20;
 			mRange = 192;
-			mTimeInterval = 95000;
+			mTimeInterval = 9500;
 			break;
 		case 4:
 			mRowsLeftAtLevel = 22;
 			mRange = 256;
-			mTimeInterval = 90000;
+			mTimeInterval = 9000;
 			break;
 		case 5:
 			mRowsLeftAtLevel = 24;
 			mRange = 256;
-			mTimeInterval = 85000;
+			mTimeInterval = 8500;
 			break;
 		case 6:
 			mRowsLeftAtLevel = 26;
 			mRange = 256;
-			mTimeInterval = 80000;
+			mTimeInterval = 8000;
 			break;
 		case 7:
 			mRowsLeftAtLevel = 28;
 			mRange = 256;
-			mTimeInterval = 75000;
+			mTimeInterval = 7500;
 			break;
 		case 8:
 			mRowsLeftAtLevel = 30;
 			mRange = 256;
-			mTimeInterval = 70000;
+			mTimeInterval = 7000;
 			break;
 		case 9:
 			mRowsLeftAtLevel = 0;

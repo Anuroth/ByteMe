@@ -3,7 +3,7 @@ ByteMe
 This is an Android game to practise the translation between binary,
 decimal and hexadecimal numbers. The game itself is inspired by
 Cisco Binary Game http://forums.cisco.com/CertCom/game/binary_game_page.htm .
-It was initiated by Anuroth and iLLmaT as a contribution to
+It was initiated by Anuroth and illmat as a contribution to
 http://opensecuritytraining.info/ .
 
 Usage:

@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <item
+        android:id="@+id/actionbar_pause_resume_no_split"
+        android:title="@string/actionbar_pause"
+        android:showAsAction="always"
+    />
+    
+    <item
         android:id="@+id/actionbar_level"
         android:title="@string/actionbar_level"
         android:showAsAction="always"

@@ -22,9 +22,10 @@ import android.support.v4.app.FragmentManager;
  * This activity also implements the required {@link GameListFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class GameActivity extends SherlockFragmentActivity implements GameTypeSelectionFragment.Callbacks,
-		OutOfGameFragment.GameInit, InGameFragment.GameLogic, GameLogicFragment.UI,
-		GameLostDialogFragment.GameLostListener, GameWonDialogFragment.GameWonListener {
+public class GameActivity extends SherlockFragmentActivity implements
+		GameTypeSelectionFragment.Callbacks, OutOfGameFragment.GameInit, InGameFragment.GameLogic,
+		GameLogicFragment.UI, GameLostDialogFragment.GameLostListener,
+		GameWonDialogFragment.GameWonListener {
 
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -46,14 +47,14 @@ public class GameActivity extends SherlockFragmentActivity implements GameTypeSe
 
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
-			((GameTypeSelectionFragment) getSupportFragmentManager().findFragmentById(R.id.game_type_selection))
-					.setActivateOnItemClick(true);
+			((GameTypeSelectionFragment) getSupportFragmentManager().findFragmentById(
+					R.id.game_type_selection)).setActivateOnItemClick(true);
 		}
 	}
 
 	/**
-	 * Callback method from {@link GameTypeSelectionFragment.Callbacks} indicating that
-	 * the item with the given ID was selected.
+	 * Callback method from {@link GameTypeSelectionFragment.Callbacks}
+	 * indicating that the item with the given ID was selected.
 	 */
 	@Override
 	public void onItemSelected(String id) {
@@ -232,7 +233,7 @@ public class GameActivity extends SherlockFragmentActivity implements GameTypeSe
 		boolean gameWonOrLost = false;
 
 		if (gameLogic != null) {
-			gameLogicGameType = gameLogic.getArguments().getString(gameLogic.GAME_TYPE);
+			gameLogicGameType = gameLogic.getArguments().getString(GameLogicFragment.GAME_TYPE);
 
 			if (gameLogic.isGameWon() || gameLogic.isGameLost()) {
 				gameWonOrLost = true;

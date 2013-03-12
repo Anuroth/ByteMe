@@ -1,5 +1,6 @@
 package com.redvex.byteme;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.redvex.byteme.gamelogic.GameLogicFragment;
@@ -7,20 +8,20 @@ import com.redvex.byteme.gamelogic.GameLogicFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.view.View;
+import android.widget.Button;
 
 /**
- * An activity representing a single Game detail screen. This activity is only
- * used on handset devices. On tablet-size devices, item details are presented
- * side-by-side with a list of items in a {@link GameListActivity}.
+ * An activity representing a just the Game field screen. This activity is only
+ * used on handset devices. On tablet-size devices, the Game field is presented
+ * side-by-side with the Game type selection in a {@link GameActivity}.
  * <p>
  * This activity is mostly just a 'shell' activity containing nothing more than
- * a {@link GameDetailFragment}.
+ * a {@link OutOfGameFragment/InGameFragment}.
  */
 public class HandsetDeviceGameActivity extends SherlockFragmentActivity implements
 		OutOfGameFragment.GameInit, InGameFragment.GameLogic, GameLogicFragment.UI,
 		GameLostDialogFragment.GameLostListener, GameWonDialogFragment.GameWonListener {
-
-	public static final String IN_GAME = "false";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +40,6 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 		//
 		// http://developer.android.com/guide/components/fragments.html
 		//
-		if (getIntent().getBooleanExtra(IN_GAME, false)) {
-			Bundle arguments = new Bundle();
-			arguments.putString(InGameFragment.GAME_TYPE,
-					getIntent().getStringExtra(InGameFragment.GAME_TYPE));
-			InGameFragment fragment = new InGameFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction().add(R.id.game_field_container, fragment)
-					.commit();
-		}
 		if (savedInstanceState == null) {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
@@ -59,6 +51,14 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 			getSupportFragmentManager().beginTransaction().add(R.id.game_field_container, fragment)
 					.commit();
 		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+				| ActionBar.DISPLAY_HOME_AS_UP);
 	}
 
 	@Override
@@ -89,6 +89,37 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 		fragment.setArguments(arguments);
 		getSupportFragmentManager().beginTransaction().replace(R.id.game_field_container, fragment)
 				.addToBackStack(null).commit();
+
+		// On handset devices a custom layout is added to the actionbar to pause and resume the game.
+		// The rest of the actionbar layout is inflated to the bottom actionbar in the fragment itself.
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setCustomView(R.layout.actionbar_pause_resume);
+		Button pauseResume = (Button) actionBar.getCustomView().findViewById(
+				R.id.actionbar_pause_resume);
+		pauseResume.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				// Getting the pause and resume Button from the actionbar.
+				Button pauseResume = (Button) getSupportActionBar().getCustomView().findViewById(
+						R.id.actionbar_pause_resume);
+				// Getting the InGameFragment.
+				InGameFragment fragment = (InGameFragment) getSupportFragmentManager()
+						.findFragmentById(R.id.game_field_container);
+				if (pauseResume.getText().toString().equals(getString(R.string.actionbar_pause))) {
+					// Pause game.
+					pauseResume.setText(getString(R.string.actionbar_resume));
+					pauseGameLogic();
+					findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
+					fragment.setKeyboardsInvisible();
+				} else {
+					// Resume game.
+					pauseResume.setText(getString(R.string.actionbar_pause));
+					startGameLogic(fragment.getArguments().getString(InGameFragment.GAME_TYPE));
+					findViewById(R.id.game_field).setVisibility(View.VISIBLE);
+				}
+			}
+		});
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+				| ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP);
 	}
 
 	/**
@@ -220,7 +251,7 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 		String gameLogicGameType = "null";
 
 		if (gameLogic != null) {
-			gameLogicGameType = gameLogic.getArguments().getString(gameLogic.GAME_TYPE);
+			gameLogicGameType = gameLogic.getArguments().getString(GameLogicFragment.GAME_TYPE);
 		}
 
 		// If there hasn't been a game started yet, or the paused game type

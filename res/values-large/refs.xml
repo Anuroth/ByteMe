@@ -6,8 +6,14 @@
 
     For more on layout aliases, see:
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+
     -->
     <item name="activity_game_type_selection" type="layout">@layout/activity_game_twopane</item>
+    <!--
+    On Large screens the pause/resume Button is part of the inflated menu layout. Otherwise
+    the Actionbar is split. Than there is an extra layout for the pause/resume Button.
+    -->
+    <item name="actionbar" type="menu">@menu/actionbar_no_split</item>
     <!-- On Large screens a 4x4 hex keyboard layout is used otherwise a 5x3. -->
     <item name="hex" type="xml">@xml/hex_4x4</item>
 

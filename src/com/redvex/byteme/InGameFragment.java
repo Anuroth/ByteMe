@@ -112,6 +112,10 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 		mKeyboardHex = new Keyboard(getActivity(), R.xml.hex);
 	}
 
+	public void setKeyboardsInvisible() {
+		mKeyboardView.setVisibility(View.INVISIBLE);
+	}
+
 	/**
 	 * Initializes each row with new ArrayList<row type> objects.
 	 */
@@ -142,7 +146,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				newBinTextView.setLayoutParams(new LinearLayout.LayoutParams(0,
 						LayoutParams.MATCH_PARENT, 1.0f));
 				newBinTextView.setGravity(Gravity.CENTER);
-				
+
 				try {
 					newBinTextView.setText(binText.get(i));
 				} catch (IndexOutOfBoundsException e) {
@@ -157,7 +161,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 						// If the keyboard of a decimal or hexadecimal row is
 						// visible it's set to View.INVISIBLE.
 						if (mKeyboardView.getVisibility() == View.VISIBLE) {
-							mKeyboardView.setVisibility(View.INVISIBLE);
+							setKeyboardsInvisible();
 						}
 
 						// The current bit is swapped.
@@ -561,10 +565,12 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			// Default is to expand the keyboard to the right top.
 			// The x value is made up of the x position of the mCurrentTextView.
 			// Since
-			// this TextView is embedded in a LinearLayout, the x position of the
+			// this TextView is embedded in a LinearLayout, the x position of
+			// the
 			// LinearLayout has to be added to the x value of the
 			// mCurrentTextView.
-			// Now x is at the beginning of the mCurrentTextView. To position the
+			// Now x is at the beginning of the mCurrentTextView. To position
+			// the
 			// keyboard in the middle of the TextView half the width has to be
 			// added.
 			// To position the bottom of the keyboard at the top of
@@ -572,8 +578,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			// the height of the keyboard has to be subtracted from the y
 			// position
 			// of mCurrentTextView.
-			float x = mCurrentTextView.getX() + ((LinearLayout) mCurrentTextView.getParent()).getX()
-					+ (widthTextView / 2);
+			float x = mCurrentTextView.getX()
+					+ ((LinearLayout) mCurrentTextView.getParent()).getX() + (widthTextView / 2);
 			float y = mCurrentTextView.getY() - heightKeyboard;
 
 			// Checks if the left/right expansion of the keyboard has to be
@@ -628,13 +634,15 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.actionbar_pause_resume:
+		case R.id.actionbar_pause_resume_no_split:
 			if (item.getTitle().toString().equals(getString(R.string.actionbar_pause))) {
+				// Pause game.
 				item.setTitle(getString(R.string.actionbar_resume));
 				mGameLogic.pauseGameLogic();
 				getActivity().findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
-				mKeyboardView.setVisibility(View.INVISIBLE);
+				setKeyboardsInvisible();
 			} else {
+				// Resume game.
 				item.setTitle(getString(R.string.actionbar_pause));
 				mGameLogic.startGameLogic(getArguments().getString(GAME_TYPE));
 				getActivity().findViewById(R.id.game_field).setVisibility(View.VISIBLE);
@@ -751,7 +759,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	public void onKey(int arg0, int[] arg1) {
 		switch (arg0) {
 		case -5:
-			// If the Text field of mCurrentTextView contains characters the last
+			// If the Text field of mCurrentTextView contains characters the
+			// last
 			// one gets deleted.
 			if (mCurrentTextView.getText().toString().length() > 0) {
 				mCurrentTextView.setText(mCurrentTextView.getText().toString()
@@ -761,7 +770,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 		case 10:
 			// The visibility of the keyboard is set to View.INVISIBLE if the
 			// user presses 'Enter'.
-			mKeyboardView.setVisibility(View.INVISIBLE);
+			setKeyboardsInvisible();
 
 			// The update of the row is sent to the GameLogic.
 			if (mKeyboardView.getKeyboard().equals(mKeyboardDec)) {

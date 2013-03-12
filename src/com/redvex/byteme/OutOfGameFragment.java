@@ -95,7 +95,7 @@ public class OutOfGameFragment extends SherlockFragment {
 		boolean gameWonOrLost = false;
 
 		if (gameLogic != null) {
-			gameLogicGameType = gameLogic.getArguments().getString(gameLogic.GAME_TYPE);
+			gameLogicGameType = gameLogic.getArguments().getString(GameLogicFragment.GAME_TYPE);
 
 			if (gameLogic.isGameWon() || gameLogic.isGameLost()) {
 				gameWonOrLost = true;
