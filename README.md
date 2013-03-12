@@ -10,13 +10,12 @@ Usage:
 ------
 The application uses ActionBarSherlock to implement the actionbar.
 For further information how to add ActionBarSherlock to a project
-see http://actionbarsherlock.com/ . Also the Support Library has
-to be added to the project.
+see http://actionbarsherlock.com/ . 
+Besides that the Support Library has to be added to the project.
 
 ToDo List:
 ----------
 General:
-* an own fragment for the keyboard
 * explanation how translate the numbers
 * implement graphics (something in Tron Legacy style prefered)
 * cleaning up the code
@@ -28,9 +27,6 @@ General:
 		
 Cellphones/Small screen devices:
 * implement service for the game logic
-* adjusting the game field to the small screen
-		
-The ToDo List may be extened before the final version.
 
 Contributers:
 -------------

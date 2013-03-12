@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 /**
- * An activity representing a just the Game field screen. This activity is only
+ * An activity representing just the Game field screen. This activity is only
  * used on handset devices. On tablet-size devices, the Game field is presented
  * side-by-side with the Game type selection in a {@link GameActivity}.
  * <p>
@@ -56,6 +56,7 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 	@Override
 	protected void onPause() {
 		super.onPause();
+		// Hides the pause/resume Button if the activity is not visible.
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
 				| ActionBar.DISPLAY_HOME_AS_UP);
@@ -80,7 +81,7 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 
 	/**
 	 * Callback method from {@link OutOfGameFragment.GameInit} which is used to
-	 * start the InGameDetailFragment.
+	 * start the InGameDetailFragment and initiates the top actionbar.
 	 */
 	public void startGame(String gameType) {
 		Bundle arguments = new Bundle();

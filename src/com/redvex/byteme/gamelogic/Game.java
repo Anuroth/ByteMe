@@ -84,13 +84,17 @@ public class Game {
 		return new GameRow(mGameType, mRange, mFixedValues);
 	}
 
-	public int removeRow() {
+	/**
+	 * @return true if a new level is reached, otherwise false.
+	 */
+	public boolean removeRow() {
 		mActiveRows--;
 		mRowsLeftAtLevel--;
 		mTotalRowsKilled++;
 		mScore += 10;
 
 		if (mRowsLeftAtLevel == 0) {
+			// New level is reached.
 			mLevel++;
 			mLevelController.setLevel(mLevel);
 			mActiveRows = 0;
@@ -100,9 +104,34 @@ public class Game {
 				mWon = true;
 			}
 
-			return 1;
+			return true;
 		}
 
-		return 0;
+		return false;
+	}
+	
+	
+	/**
+	 * Removes a row from the mRowsLeftAtLevel and adds bonus points to the score.
+	 * @return true if a new level is reached, otherwise false.
+	 */
+	public boolean boardCleared() {
+		mRowsLeftAtLevel--;
+		mScore += 20;
+		
+		if (mRowsLeftAtLevel == 0) {
+			// New level is reached.
+			mLevel++;
+			mLevelController.setLevel(mLevel);
+			mActiveRows = 0;
+			mRowsLeftAtLevel = mLevelController.getRowsLeftAtLevel();
+
+			if (mRowsLeftAtLevel == 0) {
+				mWon = true;
+			}
+			return true;
+		}
+
+		return false;
 	}
 }

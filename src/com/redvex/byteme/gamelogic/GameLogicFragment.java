@@ -227,7 +227,7 @@ public class GameLogicFragment extends SherlockFragment {
 	}
 
 	private void removeRow(int index) {
-		int levelStatus = mGame.removeRow();
+		boolean levelStatus = mGame.removeRow();
 
 		mUI.displayScore(mGame.getScore());
 		mUI.displayLinesLeft(mGame.getRowsLeftAtLevel());
@@ -235,12 +235,15 @@ public class GameLogicFragment extends SherlockFragment {
 		if (mGame.isWon()) {
 			mUI.displayWinScreen(mGame.getScore());
 		} else {
-			if (levelStatus == 1) {
+			if (levelStatus) {
 				// Level finished and new level reached.
+				// Timer is reseted.
+				mHandler.removeCallbacks(mRunnable);
 				mUI.displayLevel(mGame.getLevel());
 				clearBoard();
 				addRow();
 				addRow();
+				mHandler.postDelayed(mRunnable, mGame.getTimeInterval());
 			} else {
 				mGameRows.remove(index);
 				mUI.removeUIRow(index);
@@ -256,8 +259,14 @@ public class GameLogicFragment extends SherlockFragment {
 			// timer of the gameLoop is reseted.
 			if (mGame.getTotalRowsKilled() != 1 && mGame.getActiveRows() == 0) {
 				mHandler.removeCallbacks(mRunnable);
+				if (mGame.boardCleared()) {
+					// Level finished and new level reached.
+					mUI.displayLevel(mGame.getLevel());
+				}
 				addRow();
 				addRow();
+				mUI.displayScore(mGame.getScore());
+				mUI.displayLinesLeft(mGame.getRowsLeftAtLevel());
 				mHandler.postDelayed(mRunnable, mGame.getTimeInterval());
 			}
 		}
