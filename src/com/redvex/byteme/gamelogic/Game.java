@@ -88,10 +88,6 @@ public class Game {
 		return mPaused;
 	}
 
-	public void setPaused(boolean mPaused) {
-		this.mPaused = mPaused;
-	}
-
 	public long getTimeInterval() {
 		return mLevelController.getTimeInterval();
 	}
@@ -110,8 +106,8 @@ public class Game {
 	}
 
 	private void calculateBonusLevelScore() {
-		long maxTime = ((long) (mLevelController.getRowsLeftAtLevel() - 2) + (long) mMaxActiveRows)
-				* (mLevelController.getTimeInterval() / 1000);
+		long maxTime = (((long) (mLevelController.getRowsLeftAtLevel() - 2) + (long) mMaxActiveRows)
+				* mLevelController.getTimeInterval()) / 1000;
 		long neededTime = mElapsedTimeAtLevel / 1000;
 		long bonusLevelScore = (maxTime - neededTime);
 
@@ -131,7 +127,7 @@ public class Game {
 		mRowScore += mScoreForSolvedRow;
 		mTotalScore += mScoreForSolvedRow;
 
-		if (mRowsLeftAtLevel == 0) {
+		if (mRowsLeftAtLevel <= 0) {
 			// New level is reached.
 			stopLevelTimer();
 			calculateBonusLevelScore();
@@ -161,7 +157,7 @@ public class Game {
 		mRowScore += 2 * mScoreForSolvedRow;
 		mTotalScore += 2 * mScoreForSolvedRow;
 
-		if (mRowsLeftAtLevel == 0) {
+		if (mRowsLeftAtLevel <= 0) {
 			// New level is reached.
 			stopLevelTimer();
 			calculateBonusLevelScore();
@@ -185,12 +181,18 @@ public class Game {
 	}
 
 	public void pauseLevelTimer() {
-		mStopTime = System.currentTimeMillis();
-		elapsedLevelTime();
+		if (!mPaused) {
+			mPaused = true;
+			mStopTime = System.currentTimeMillis();
+			elapsedLevelTime();
+		}
 	}
 
 	public void resumeLevelTimer() {
-		mStartTime = System.currentTimeMillis();
+		if (mPaused) {
+			mPaused = false;
+			mStartTime = System.currentTimeMillis();
+		}
 	}
 
 	private void stopLevelTimer() {
@@ -199,6 +201,6 @@ public class Game {
 	}
 
 	private void elapsedLevelTime() {
-		mElapsedTimeAtLevel += mStartTime - mStopTime;
+		mElapsedTimeAtLevel += mStopTime - mStartTime;
 	}
 }

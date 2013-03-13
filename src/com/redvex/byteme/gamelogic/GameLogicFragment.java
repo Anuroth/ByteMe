@@ -108,7 +108,6 @@ public class GameLogicFragment extends SherlockFragment {
 
 	public void pauseGame() {
 		try {
-			mGame.setPaused(true);
 			mGame.pauseLevelTimer();
 		} catch (NullPointerException e) {
 			throw new NullPointerException("No mGame object to pause the game.");
@@ -121,7 +120,6 @@ public class GameLogicFragment extends SherlockFragment {
 			mUI.addUIRow(gameRow2UIRow(mGameRows.get(i)));
 		}
 		try {
-			mGame.setPaused(false);
 			mGame.resumeLevelTimer();
 		} catch (NullPointerException e) {
 			throw new NullPointerException("No mGame object to resume the game.");
