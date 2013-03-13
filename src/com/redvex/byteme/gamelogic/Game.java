@@ -12,15 +12,22 @@ public class Game {
 	private int mMaxActiveRows = 10;
 	private int mRowsLeftAtLevel;
 	private int mTotalRowsKilled = 0;
-	private int mScore = 0;
+	private int mTotalScore = 0;
+	private ArrayList<Integer> mLevelScore = new ArrayList<Integer>();
+	private int mRowScore = 0;
+	private int mScoreForSolvedRow = 15;
 	private boolean mWon = false;
 	private boolean mLost = false;
 	private boolean mPaused = false;
+	private long mStartTime = 0;
+	private long mStopTime = 0;
+	private long mElapsedTimeAtLevel = 0;
 
 	public Game(GameType mGameType) {
 		this.mGameType = mGameType;
 		mLevelController = new LevelController(mGameType, mLevel);
 		mRowsLeftAtLevel = mLevelController.getRowsLeftAtLevel();
+		mLevelScore.add(0);
 	}
 
 	public GameType getGameType() {
@@ -47,8 +54,26 @@ public class Game {
 		return mTotalRowsKilled;
 	}
 
-	public int getScore() {
-		return mScore;
+	/**
+	 * @return The combined score earned by solving rows and the bonus score for
+	 *         solving the level.
+	 */
+	public int getTotalScore() {
+		return mTotalScore;
+	}
+
+	/**
+	 * @return The bonus score for solving the level.
+	 */
+	public ArrayList<Integer> getLevelScore() {
+		return mLevelScore;
+	}
+
+	/**
+	 * @return The score earned by solving rows.
+	 */
+	public int getRowScore() {
+		return mRowScore;
 	}
 
 	public boolean isWon() {
@@ -84,17 +109,32 @@ public class Game {
 		return new GameRow(mGameType, mRange, mFixedValues);
 	}
 
+	private void calculateBonusLevelScore() {
+		long maxTime = ((long) (mLevelController.getRowsLeftAtLevel() - 2) + (long) mMaxActiveRows)
+				* (mLevelController.getTimeInterval() / 1000);
+		long neededTime = mElapsedTimeAtLevel / 1000;
+		long bonusLevelScore = (maxTime - neededTime);
+
+		mLevelScore.set(mLevel - 1, (int) bonusLevelScore);
+		mLevelScore.add(0);
+
+		mTotalScore += bonusLevelScore;
+	}
+
 	/**
-	 * @return true if a new level is reached, otherwise false.
+	 * @return True if a new level is reached, otherwise false.
 	 */
 	public boolean removeRow() {
 		mActiveRows--;
 		mRowsLeftAtLevel--;
 		mTotalRowsKilled++;
-		mScore += 10;
+		mRowScore += mScoreForSolvedRow;
+		mTotalScore += mScoreForSolvedRow;
 
 		if (mRowsLeftAtLevel == 0) {
 			// New level is reached.
+			stopLevelTimer();
+			calculateBonusLevelScore();
 			mLevel++;
 			mLevelController.setLevel(mLevel);
 			mActiveRows = 0;
@@ -109,18 +149,22 @@ public class Game {
 
 		return false;
 	}
-	
-	
+
 	/**
-	 * Removes a row from the mRowsLeftAtLevel and adds bonus points to the score.
-	 * @return true if a new level is reached, otherwise false.
+	 * Removes a row from the mRowsLeftAtLevel and adds bonus points to the
+	 * score.
+	 * 
+	 * @return True if a new level is reached, otherwise false.
 	 */
 	public boolean boardCleared() {
 		mRowsLeftAtLevel--;
-		mScore += 20;
-		
+		mRowScore += 2 * mScoreForSolvedRow;
+		mTotalScore += 2 * mScoreForSolvedRow;
+
 		if (mRowsLeftAtLevel == 0) {
 			// New level is reached.
+			stopLevelTimer();
+			calculateBonusLevelScore();
 			mLevel++;
 			mLevelController.setLevel(mLevel);
 			mActiveRows = 0;
@@ -133,5 +177,28 @@ public class Game {
 		}
 
 		return false;
+	}
+
+	public void startLevelTimer() {
+		mStartTime = System.currentTimeMillis();
+		mElapsedTimeAtLevel = 0;
+	}
+
+	public void pauseLevelTimer() {
+		mStopTime = System.currentTimeMillis();
+		elapsedLevelTime();
+	}
+
+	public void resumeLevelTimer() {
+		mStartTime = System.currentTimeMillis();
+	}
+
+	private void stopLevelTimer() {
+		mStopTime = System.currentTimeMillis();
+		elapsedLevelTime();
+	}
+
+	private void elapsedLevelTime() {
+		mElapsedTimeAtLevel += mStartTime - mStopTime;
 	}
 }

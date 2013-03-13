@@ -52,9 +52,10 @@ public class GameLogicFragment extends SherlockFragment {
 
 		public void displayLinesLeft(int linesLeft);
 
-		public void displayWinScreen(int score);
+		public void displayWinScreen(int totalScore, int rowScore, ArrayList<Integer> levelScore);
 
-		public void displayLostScreen(int level, int score);
+		public void displayLostScreen(int level, int totalScore, int rowScore,
+				ArrayList<Integer> levelScore);
 	}
 
 	/**
@@ -87,18 +88,19 @@ public class GameLogicFragment extends SherlockFragment {
 		}
 
 		@Override
-		public void displayWinScreen(int score) {
+		public void displayWinScreen(int totalScore, int rowScore, ArrayList<Integer> levelScore) {
 		}
 
 		@Override
-		public void displayLostScreen(int level, int score) {
+		public void displayLostScreen(int level, int totalScore, int rowScore,
+				ArrayList<Integer> levelScore) {
 		}
 	};
 
 	private void startGame() {
 		if (mGame.getActiveRows() == 0 && mGame.getTotalRowsKilled() == 0) {
 			mUI.displayLevel(mGame.getLevel());
-			mUI.displayScore(mGame.getScore());
+			mUI.displayScore(mGame.getTotalScore());
 			mUI.displayLinesLeft(mGame.getRowsLeftAtLevel());
 			addRow();
 		}
@@ -107,6 +109,7 @@ public class GameLogicFragment extends SherlockFragment {
 	public void pauseGame() {
 		try {
 			mGame.setPaused(true);
+			mGame.pauseLevelTimer();
 		} catch (NullPointerException e) {
 			throw new NullPointerException("No mGame object to pause the game.");
 		}
@@ -119,11 +122,12 @@ public class GameLogicFragment extends SherlockFragment {
 		}
 		try {
 			mGame.setPaused(false);
+			mGame.resumeLevelTimer();
 		} catch (NullPointerException e) {
 			throw new NullPointerException("No mGame object to resume the game.");
 		}
 		mUI.displayLevel(mGame.getLevel());
-		mUI.displayScore(mGame.getScore());
+		mUI.displayScore(mGame.getTotalScore());
 		mUI.displayLinesLeft(mGame.getRowsLeftAtLevel());
 	}
 
@@ -222,18 +226,20 @@ public class GameLogicFragment extends SherlockFragment {
 			mGameRows.add(tempGameRow);
 			mUI.addUIRow(gameRow2UIRow(tempGameRow));
 		} else {
-			mUI.displayLostScreen(mGame.getLevel(), mGame.getScore());
+			mUI.displayLostScreen(mGame.getLevel(), mGame.getTotalScore(), mGame.getRowScore(),
+					mGame.getLevelScore());
 		}
 	}
 
 	private void removeRow(int index) {
 		boolean levelStatus = mGame.removeRow();
 
-		mUI.displayScore(mGame.getScore());
+		mUI.displayScore(mGame.getTotalScore());
 		mUI.displayLinesLeft(mGame.getRowsLeftAtLevel());
 
 		if (mGame.isWon()) {
-			mUI.displayWinScreen(mGame.getScore());
+			mUI.removeUIRow(index);
+			mUI.displayWinScreen(mGame.getTotalScore(), mGame.getRowScore(), mGame.getLevelScore());
 		} else {
 			if (levelStatus) {
 				// Level finished and new level reached.
@@ -241,6 +247,7 @@ public class GameLogicFragment extends SherlockFragment {
 				mHandler.removeCallbacks(mRunnable);
 				mUI.displayLevel(mGame.getLevel());
 				clearBoard();
+				mGame.startLevelTimer();
 				addRow();
 				addRow();
 				mHandler.postDelayed(mRunnable, mGame.getTimeInterval());
@@ -252,6 +259,7 @@ public class GameLogicFragment extends SherlockFragment {
 			// Wait until the first line is solved to start the timer.
 			if (mGame.getTotalRowsKilled() == 1) {
 				mRunnable.run();
+				mGame.startLevelTimer();
 			}
 
 			// If the first line has already been solved and the user
@@ -262,10 +270,11 @@ public class GameLogicFragment extends SherlockFragment {
 				if (mGame.boardCleared()) {
 					// Level finished and new level reached.
 					mUI.displayLevel(mGame.getLevel());
+					mGame.startLevelTimer();
 				}
 				addRow();
 				addRow();
-				mUI.displayScore(mGame.getScore());
+				mUI.displayScore(mGame.getTotalScore());
 				mUI.displayLinesLeft(mGame.getRowsLeftAtLevel());
 				mHandler.postDelayed(mRunnable, mGame.getTimeInterval());
 			}

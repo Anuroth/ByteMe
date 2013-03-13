@@ -10,8 +10,11 @@
     <string name="actionbar_score">Score: </string>
     <string name="actionbar_lines_left">Lines left: </string>
     <string name="game_won">WINNER WINNER CHICKEN DINNER!</string>
-    <string name="score_won">Your score is: </string>
     <string name="game_lost">You have died a misserable death!</string>
+    <string name="reached_level">You have reached Level: </string>
+    <string name="level_score">Bonus score at Level </string>
+    <string name="row_score">Score for solved lines: </string>
+    <string name="total_score">Your total score is: </string>
     <string name="button_continue">Continue</string>
 
 </resources>

@@ -123,6 +123,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 		sBinaryRow = new ArrayList<LinearLayout>();
 		sDecimalRow = new ArrayList<TextView>();
 		sHexadecimalRow = new ArrayList<TextView>();
+		getActivity().findViewById(R.id.game_field).setVisibility(View.VISIBLE);
 	}
 
 	/**

@@ -1,11 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
     
 	<TextView
 	    android:id="@+id/game_won_text"
-	    style="?android:attr/textAppearanceMedium"
+	    style="?android:attr/textAppearanceSmall"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center_horizontal"
@@ -13,13 +13,32 @@
 	    android:text="@string/game_won" />
 	
 	<TextView
-	    android:id="@+id/game_won_score"
-	    style="?android:attr/textAppearanceMedium"
+	    android:id="@+id/game_won_level_score"
+	    style="?android:attr/textAppearanceSmall"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center_horizontal"
+	    android:singleLine="false"
+	    android:padding="16dp"
+	    android:text="@string/level_score" />
+	
+	<TextView
+	    android:id="@+id/game_won_row_score"
+	    style="?android:attr/textAppearanceSmall"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center_horizontal"
 	    android:padding="16dp"
-	    android:text="@string/actionbar_score" />
+	    android:text="@string/row_score" />
+	
+	<TextView
+	    android:id="@+id/game_won_total_score"
+	    style="?android:attr/textAppearanceSmall"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center_horizontal"
+	    android:padding="16dp"
+	    android:text="@string/total_score" />
 	
 	<Button
 	    android:id="@+id/game_won_continue"

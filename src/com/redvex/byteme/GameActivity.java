@@ -1,5 +1,7 @@
 package com.redvex.byteme;
 
+import java.util.ArrayList;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.redvex.byteme.gamelogic.GameLogicFragment;
 
@@ -173,8 +175,9 @@ public class GameActivity extends SherlockFragmentActivity implements
 	 * display the win message.
 	 */
 	@Override
-	public void displayWinScreen(int score) {
-		GameWonDialogFragment winScreen = GameWonDialogFragment.newInstance(score);
+	public void displayWinScreen(int totalScore, int rowScore, ArrayList<Integer> levelScore) {
+		GameWonDialogFragment winScreen = GameWonDialogFragment.newInstance(totalScore, rowScore,
+				levelScore);
 		winScreen.setCancelable(false);
 		winScreen.show(getSupportFragmentManager(), "GameWonDialogFragment");
 	}
@@ -184,8 +187,10 @@ public class GameActivity extends SherlockFragmentActivity implements
 	 * display the lost screen.
 	 */
 	@Override
-	public void displayLostScreen(int level, int score) {
-		GameLostDialogFragment lostScreen = GameLostDialogFragment.newInstance(level, score);
+	public void displayLostScreen(int level, int totalScore, int rowScore,
+			ArrayList<Integer> levelScore) {
+		GameLostDialogFragment lostScreen = GameLostDialogFragment.newInstance(level, totalScore,
+				rowScore, levelScore);
 		lostScreen.setCancelable(false);
 		lostScreen.show(getSupportFragmentManager(), "GameLostDialogFragment");
 	}

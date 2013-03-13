@@ -1,5 +1,7 @@
 package com.redvex.byteme;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -17,13 +19,17 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
  */
 public class GameWonDialogFragment extends SherlockDialogFragment {
 	/**
-	 * Creating a new instance of GameWonDialogFragment with score as arguments.
+	 * Creating a new instance of GameWonDialogFragment with totalScore,
+	 * rowScore and levelScore as arguments.
 	 */
-	static GameWonDialogFragment newInstance(int score) {
+	static GameWonDialogFragment newInstance(int totalScore, int rowScore,
+			ArrayList<Integer> levelScore) {
 		GameWonDialogFragment wonScreen = new GameWonDialogFragment();
 
 		Bundle args = new Bundle();
-		args.putInt("score", score);
+		args.putInt("totalScore", totalScore);
+		args.putInt("rowScore", rowScore);
+		args.putIntegerArrayList("levelScore", levelScore);
 		wonScreen.setArguments(args);
 
 		return wonScreen;
@@ -43,10 +49,44 @@ public class GameWonDialogFragment extends SherlockDialogFragment {
 		// Inflate the layout to use as dialog or embedded fragment
 		View view = inflater.inflate(R.layout.game_won, container, false);
 
-		TextView textView = (TextView) view.findViewById(R.id.game_won_score);
+		// Constructing a multi-line string to display the bonus score earned in
+		// each level.
+		String textLevelScore = "";
+		for (int i = 0; i != getArguments().getIntegerArrayList("levelScore").size(); i++) {
+			if (getArguments().getIntegerArrayList("levelScore").get(i) != 0) {
+				try {
+					textLevelScore += getString(R.string.level_score)
+							+ Integer.toString(i + 1)
+							+ ": "
+							+ Integer.toString(getArguments().getIntegerArrayList("levelScore")
+									.get(i));
+					if (getArguments().getIntegerArrayList("levelScore").get(i + 1) != 0) {
+						textLevelScore += "\n";
+					}
+				} catch (NullPointerException e) {
+					throw new NullPointerException(e.getMessage());
+				}
+			}
+		}
+		TextView levelScore = (TextView) view.findViewById(R.id.game_won_level_score);
 		try {
-			textView.setText(getString(R.string.actionbar_score)
-					+ Integer.toString(getArguments().getInt("score")));
+			levelScore.setText(textLevelScore);
+		} catch (NullPointerException e) {
+			throw new NullPointerException(e.getMessage());
+		}
+
+		TextView rowScore = (TextView) view.findViewById(R.id.game_won_row_score);
+		try {
+			rowScore.setText(getString(R.string.row_score)
+					+ Integer.toString(getArguments().getInt("rowScore")));
+		} catch (NullPointerException e) {
+			throw new NullPointerException(e.getMessage());
+		}
+
+		TextView totalScore = (TextView) view.findViewById(R.id.game_won_total_score);
+		try {
+			totalScore.setText(getString(R.string.total_score)
+					+ Integer.toString(getArguments().getInt("totalScore")));
 		} catch (NullPointerException e) {
 			throw new NullPointerException(e.getMessage());
 		}

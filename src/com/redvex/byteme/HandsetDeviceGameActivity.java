@@ -1,5 +1,7 @@
 package com.redvex.byteme;
 
+import java.util.ArrayList;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -91,8 +93,10 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 		getSupportFragmentManager().beginTransaction().replace(R.id.game_field_container, fragment)
 				.addToBackStack(null).commit();
 
-		// On handset devices a custom layout is added to the actionbar to pause and resume the game.
-		// The rest of the actionbar layout is inflated to the bottom actionbar in the fragment itself.
+		// On handset devices a custom layout is added to the actionbar to pause
+		// and resume the game.
+		// The rest of the actionbar layout is inflated to the bottom actionbar
+		// in the fragment itself.
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setCustomView(R.layout.actionbar_pause_resume);
 		Button pauseResume = (Button) actionBar.getCustomView().findViewById(
@@ -191,24 +195,37 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 
 	/**
 	 * Callback method from {@link GameLogicFragment.UI} which is used to
-	 * display the win message.
+	 * display the win screen. On handset devices the win screen is displayed in
+	 * full screen.
 	 */
 	@Override
-	public void displayWinScreen(int score) {
-		GameWonDialogFragment winScreen = GameWonDialogFragment.newInstance(score);
-		winScreen.setCancelable(false);
-		winScreen.show(getSupportFragmentManager(), "GameWonDialogFragment");
+	public void displayWinScreen(int totalScore, int rowScore, ArrayList<Integer> levelScore) {
+		GameWonDialogFragment winScreen = GameWonDialogFragment.newInstance(totalScore, rowScore,
+				levelScore);
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.game_field_container, winScreen).commit();
+
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+				| ActionBar.DISPLAY_HOME_AS_UP);
 	}
 
 	/**
 	 * Callback method from {@link GameLogicFragment.UI} which is used to
-	 * display the lost screen.
+	 * display the lost screen. On handset devices the lost screen is displayed
+	 * in full screen.
 	 */
 	@Override
-	public void displayLostScreen(int level, int score) {
-		GameLostDialogFragment lostScreen = GameLostDialogFragment.newInstance(level, score);
-		lostScreen.setCancelable(false);
-		lostScreen.show(getSupportFragmentManager(), "GameLostDialogFragment");
+	public void displayLostScreen(int level, int totalScore, int rowScore,
+			ArrayList<Integer> levelScore) {
+		GameLostDialogFragment lostScreen = GameLostDialogFragment.newInstance(level, totalScore,
+				rowScore, levelScore);
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.game_field_container, lostScreen).commit();
+
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+				| ActionBar.DISPLAY_HOME_AS_UP);
 	}
 
 	/**
