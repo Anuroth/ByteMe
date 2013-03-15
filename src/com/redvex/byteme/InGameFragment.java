@@ -9,6 +9,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.redvex.byteme.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.inputmethodservice.Keyboard;
@@ -16,7 +18,6 @@ import android.inputmethodservice.KeyboardView;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -55,6 +56,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 */
 	private TextView mCurrentTextView = null;
 
+	private boolean mActionbarPaused = false;
 	private String mActionbarLevel = "";
 	private String mActionbarScore = "";
 	private String mActionbarLinesLeft = "";
@@ -130,7 +132,10 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 * @param binField
 	 *            The LinearLayout the new binary row should be displayed in.
 	 * @param binText
-	 *            An array containing the Strings for the Text of the row.
+	 *            An ArrayList<String> containing the Strings for the Text of the row.
+	 * @param fixedBinRow
+	 *            A boolean determining if the row should be enabled or
+	 *            disabled. Set to false if the row should be enabled.
 	 */
 	private void addUIBinaryRow(LinearLayout binField, ArrayList<String> binText,
 			boolean fixedBinRow) {
@@ -197,6 +202,9 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 *            The LinearLayout the new decimal row should be displayed in.
 	 * @param decText
 	 *            A String containing the Text of the row.
+	 * @param fixedDecRow
+	 *            A boolean determining if the row should be enabled or
+	 *            disabled. Set to false if the row should be enabled.
 	 */
 	private void addUIDecimalRow(LinearLayout decField, String decText, boolean fixedDecRow) {
 		if (sDecimalRow.size() < 10) {
@@ -247,6 +255,9 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 *            in.
 	 * @param hexText
 	 *            A String containing the Text of the row.
+	 * @param fixedHexRow
+	 *            A boolean determining if the row should be enabled or
+	 *            disabled. Set to false if the row should be enabled.
 	 */
 	private void addUIHexadecimalRow(LinearLayout hexField, String hexText, boolean fixedHexRow) {
 		if (sHexadecimalRow.size() < 10) {
@@ -292,7 +303,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	}
 
 	/**
-	 * Adds a new line of rows corresponding to the current GAME_TYPE.
+	 * Adds a new row to the UI corresponding to the current GAME_TYPE.
 	 * 
 	 * @param row
 	 *            A UIRow object containing all Strings for the binary,
@@ -371,6 +382,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	}
 
 	/**
+	 * Deletes a single row from the UI.
+	 * 
 	 * @param index
 	 *            The index of the row, which should be deleted from the UI.
 	 */
@@ -448,7 +461,6 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 */
 	public void clearUIBoard() {
 		if (getArguments().containsKey(GAME_TYPE)) {
-
 			LinearLayout binField;
 			LinearLayout decField;
 			LinearLayout hexField;
@@ -504,6 +516,13 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 		}
 	}
 
+	/**
+	 * updateRow is designed to update the game logic. The current state of a
+	 * row in the UI is read and sent to the game logic.
+	 * 
+	 * @param index
+	 *            The index of the row, which should be updated.
+	 */
 	private void updateRow(int index) {
 		if (index != -1) {
 			ArrayList<String> binRowStrings = new ArrayList<String>();
@@ -515,8 +534,12 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 			for (int i = 0; i != 8; i++) {
 				if (index < sBinaryRow.size()) {
+					// Reading the single bits from the UI and storing them in
+					// an ArrayList<String> to add them to an UIRow object.
 					TextView tempTextView = (TextView) sBinaryRow.get(index).getChildAt(i);
 					binRowStrings.add(tempTextView.getText().toString());
+					// If the UI bit field is enabled the binary row is not a
+					// fixed value.
 					fixedBinRow = !tempTextView.isEnabled();
 				} else {
 					binRowStrings.add("0");
@@ -524,7 +547,10 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			}
 
 			if (index < sDecimalRow.size()) {
+				// Gets the UI value of the decimal row and stores it in a
+				// string.
 				decRowString = sDecimalRow.get(index).getText().toString();
+				// If the UI decimal row is enabled it's not a fixed value.
 				fixedDecRow = !sDecimalRow.get(index).isEnabled();
 			} else {
 				decRowString = "0";
@@ -536,9 +562,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				hexRowString = "0";
 			}
 
-			/**
-			 * ToDo: use fixed value booleans
-			 */
+			// The values read from the UI are stored in a UIRow object and sent
+			// to the game logic.
 			UIRow row = new UIRow(binRowStrings, decRowString, hexRowString, fixedBinRow,
 					fixedDecRow, fixedHexRow);
 			mGameLogic.updateRow(index, row);
@@ -547,6 +572,10 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 		}
 	}
 
+	/**
+	 * moveKeyboard moves the keyboard to the currently active and receiving
+	 * view.
+	 */
 	private void moveKeyboard() {
 		if (mCurrentTextView != null) {
 			float widthTextView = (float) mCurrentTextView.getWidth();
@@ -556,6 +585,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			float heightKeyboard;
 
 			if (mKeyboardView.getKeyboard().equals(mKeyboardDec)) {
+				// Since the width and height of the two keyboards is different,
+				// it's checked whether it's an decimal or hexadecimal keyboard.
 				widthKeyboard = (float) mKeyboardDec.getMinWidth();
 				heightKeyboard = (float) mKeyboardDec.getHeight();
 			} else {
@@ -627,6 +658,17 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
+		// The values of the action bar are updated.
+		MenuItem item = menu.findItem(R.id.actionbar_pause_resume_no_split);
+		if (item != null) {
+			// This item is just shown if the action bar isn't split.
+			if (mActionbarPaused) {
+				// If the game is paused the "Resume" title is shown.
+				item.setTitle(getString(R.string.actionbar_resume));
+			} else {
+				item.setTitle(getString(R.string.actionbar_pause));
+			}
+		}
 		menu.findItem(R.id.actionbar_level).setTitle(mActionbarLevel);
 		menu.findItem(R.id.actionbar_score).setTitle(mActionbarScore);
 		menu.findItem(R.id.actionbar_lines_left).setTitle(mActionbarLinesLeft);
@@ -638,12 +680,14 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 		case R.id.actionbar_pause_resume_no_split:
 			if (item.getTitle().toString().equals(getString(R.string.actionbar_pause))) {
 				// Pause game.
+				mActionbarPaused = true;
 				item.setTitle(getString(R.string.actionbar_resume));
 				mGameLogic.pauseGameLogic();
 				getActivity().findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
 				setKeyboardsInvisible();
 			} else {
 				// Resume game.
+				mActionbarPaused = false;
 				item.setTitle(getString(R.string.actionbar_pause));
 				mGameLogic.startGameLogic(getArguments().getString(GAME_TYPE));
 				getActivity().findViewById(R.id.game_field).setVisibility(View.VISIBLE);
@@ -657,7 +701,6 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-
 		// Activities containing this fragment must implement its GameLogic.
 		if (!(activity instanceof GameLogic)) {
 			throw new IllegalStateException("Activity must implement fragment's callbacks.");
@@ -714,44 +757,38 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	}
 
 	/**
-	 * To Do: Comment...
-	 */
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-
-		InGameFragment fragment = (InGameFragment) getActivity().getSupportFragmentManager()
-				.findFragmentById(getId());
-		FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
-				.beginTransaction();
-		fragmentTransaction.detach(fragment);
-		fragmentTransaction.attach(fragment);
-		fragmentTransaction.commit();
-	}
-
-	/**
-	 * The UI row objects are initiated and the game logic is started.
+	 * The UI row objects and the keyboards are initiated and the game logic is
+	 * started.
 	 */
 	@Override
 	public void onStart() {
 		super.onStart();
+		KeyguardManager keyguardManager = (KeyguardManager) getActivity().getApplication()
+				.getSystemService(Context.KEYGUARD_SERVICE);
 
-		initiateKeyboards();
-		initiateUIRows();
-		mGameLogic.startGameLogic(getArguments().getString(GAME_TYPE));
+		if (!keyguardManager.inKeyguardRestrictedInputMode()) {
+			// Just if the screen is unlocked the game is started.
+			initiateKeyboards();
+			initiateUIRows();
+			mGameLogic.startGameLogic(getArguments().getString(GAME_TYPE));
+		} else {
+			// The user has to resume the game manually.
+			getActivity().findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
+			setKeyboardsInvisible();
+			mActionbarPaused = true;
+			getSherlockActivity().invalidateOptionsMenu();
+		}
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-
 		mGameLogic.pauseGameLogic();
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
-
 		// Reset the active GameLogic interface to the dummy implementation.
 		mGameLogic = sGameLogicDummy;
 	}

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 /**
  * An activity representing just the Game field screen. This activity is only
@@ -58,7 +59,84 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 	@Override
 	protected void onPause() {
 		super.onPause();
-		// Hides the pause/resume Button if the activity is not visible.
+		// Removes the pause/resume Button if the activity is not visible.
+		removePauseButtonFromActionBar();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// The pause and resume button has to be added to the top action bar
+		// again.
+		LinearLayout gameField = (LinearLayout) findViewById(R.id.game_field);
+		if (gameField != null) {
+			// The pause and resume button is just added if the game field can
+			// be found => an InGameFragment is currently displayed.
+			// Display the button with "Resume".
+			addPauseButtonToActionBar(true);
+		}
+	}
+
+	/**
+	 * Adds the pause and resume button to the top action bar.
+	 * 
+	 * @param paused
+	 *            If the game is paused the value should be true. If the game is
+	 *            started and running afterwards the value should be false
+	 */
+	private void addPauseButtonToActionBar(boolean paused) {
+		// On handset devices a custom layout is added to the actionbar to pause
+		// and resume the game.
+		// The rest of the actionbar layout is inflated to the bottom actionbar
+		// in the fragment itself.
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setCustomView(R.layout.actionbar_pause_resume);
+
+		// Getting the pause and resume Button from the actionbar.
+		Button pauseResume = (Button) actionBar.getCustomView().findViewById(
+				R.id.actionbar_pause_resume);
+
+		// Setting up an OnClickListener for the pause and resume Button.
+		pauseResume.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				// Getting the pause and resume Button from the actionbar.
+				Button pauseResume = (Button) getSupportActionBar().getCustomView().findViewById(
+						R.id.actionbar_pause_resume);
+				// Getting the InGameFragment.
+				InGameFragment fragment = (InGameFragment) getSupportFragmentManager()
+						.findFragmentById(R.id.game_field_container);
+
+				if (pauseResume.getText().toString().equals(getString(R.string.actionbar_pause))) {
+					// Pause game.
+					pauseResume.setText(getString(R.string.actionbar_resume));
+					pauseGameLogic();
+					findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
+					fragment.setKeyboardsInvisible();
+				} else {
+					// Resume game.
+					pauseResume.setText(getString(R.string.actionbar_pause));
+					startGameLogic(fragment.getArguments().getString(InGameFragment.GAME_TYPE));
+					findViewById(R.id.game_field).setVisibility(View.VISIBLE);
+				}
+			}
+		});
+
+		if (paused) {
+			// If the game is paused the "Resume" text is shown.
+			pauseResume.setText(getString(R.string.actionbar_resume));
+		} else {
+			// Otherwise the "Pause" text.
+			pauseResume.setText(getString(R.string.actionbar_pause));
+		}
+
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+				| ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP);
+	}
+	
+	/**
+	 * Removes the pause and resume button from the top action bar.
+	 */
+	private void removePauseButtonFromActionBar() {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
 				| ActionBar.DISPLAY_HOME_AS_UP);
@@ -93,38 +171,7 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 		getSupportFragmentManager().beginTransaction().replace(R.id.game_field_container, fragment)
 				.addToBackStack(null).commit();
 
-		// On handset devices a custom layout is added to the actionbar to pause
-		// and resume the game.
-		// The rest of the actionbar layout is inflated to the bottom actionbar
-		// in the fragment itself.
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setCustomView(R.layout.actionbar_pause_resume);
-		Button pauseResume = (Button) actionBar.getCustomView().findViewById(
-				R.id.actionbar_pause_resume);
-		pauseResume.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				// Getting the pause and resume Button from the actionbar.
-				Button pauseResume = (Button) getSupportActionBar().getCustomView().findViewById(
-						R.id.actionbar_pause_resume);
-				// Getting the InGameFragment.
-				InGameFragment fragment = (InGameFragment) getSupportFragmentManager()
-						.findFragmentById(R.id.game_field_container);
-				if (pauseResume.getText().toString().equals(getString(R.string.actionbar_pause))) {
-					// Pause game.
-					pauseResume.setText(getString(R.string.actionbar_resume));
-					pauseGameLogic();
-					findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
-					fragment.setKeyboardsInvisible();
-				} else {
-					// Resume game.
-					pauseResume.setText(getString(R.string.actionbar_pause));
-					startGameLogic(fragment.getArguments().getString(InGameFragment.GAME_TYPE));
-					findViewById(R.id.game_field).setVisibility(View.VISIBLE);
-				}
-			}
-		});
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-				| ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP);
+		addPauseButtonToActionBar(false);
 	}
 
 	/**
@@ -205,9 +252,7 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.game_field_container, winScreen).commit();
 
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-				| ActionBar.DISPLAY_HOME_AS_UP);
+		removePauseButtonFromActionBar();
 	}
 
 	/**
@@ -223,9 +268,7 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.game_field_container, lostScreen).commit();
 
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-				| ActionBar.DISPLAY_HOME_AS_UP);
+		removePauseButtonFromActionBar();
 	}
 
 	/**
