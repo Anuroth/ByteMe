@@ -99,6 +99,46 @@ public class GameActivity extends SherlockFragmentActivity implements
 
 	/**
 	 * Callback method from {@link OutOfGameFragment.GameInit} which is used to
+	 * check if the game of the running GameLogic is won or lost.
+	 * 
+	 * @return true if the running GameLogic is set to game won or lost.
+	 *         Otherwise, also if no GameLogicFragment exists, it's set to
+	 *         false.
+	 */
+	public boolean isGameLostOrWon() {
+		// Getting the GameLogicFragment if one exists.
+		GameLogicFragment gameLogic = (GameLogicFragment) getSupportFragmentManager()
+				.findFragmentByTag("gameLogic");
+		boolean gameWonOrLost = false;
+
+		if (gameLogic != null) {
+			if (gameLogic.isGameWon() || gameLogic.isGameLost()) {
+				gameWonOrLost = true;
+			}
+		}
+
+		return gameWonOrLost;
+	}
+
+	/**
+	 * Callback method from {@link OutOfGameFragment.GameInit} which is used to
+	 * get the game type of the running GameLogic.
+	 */
+	public String getGameLogicGameType() {
+		// Getting the GameLogicFragment if one exists.
+		GameLogicFragment gameLogic = (GameLogicFragment) getSupportFragmentManager()
+				.findFragmentByTag("gameLogic");
+		String gameLogicGameType = "null";
+
+		if (gameLogic != null) {
+			gameLogicGameType = gameLogic.getArguments().getString(GameLogicFragment.GAME_TYPE);
+		}
+
+		return gameLogicGameType;
+	}
+
+	/**
+	 * Callback method from {@link OutOfGameFragment.GameInit} which is used to
 	 * start the InGameDetailFragment.
 	 */
 	public void startGame(String gameType) {

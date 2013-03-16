@@ -12,7 +12,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.redvex.byteme.GameActivity;
 import com.redvex.byteme.HandsetDeviceGameActivity;
 import com.redvex.byteme.R;
-import com.redvex.byteme.gamelogic.GameLogicFragment;
 import com.redvex.byteme.ui.dummy.DummyContent;
 
 /**
@@ -39,6 +38,10 @@ public class OutOfGameFragment extends SherlockFragment {
 	private GameInit mGameInit = sGameInitDummy;
 
 	public interface GameInit {
+		public boolean isGameLostOrWon();
+		
+		public String getGameLogicGameType();
+		
 		public void startGame(String gameType);
 	}
 
@@ -47,6 +50,16 @@ public class OutOfGameFragment extends SherlockFragment {
 	 * nothing. Used only when this fragment is not attached to an activity.
 	 */
 	private static GameInit sGameInitDummy = new GameInit() {
+		@Override
+		public boolean isGameLostOrWon() {
+			return false;
+		}
+		
+		@Override
+		public String getGameLogicGameType() {
+			return "null";
+		}
+		
 		@Override
 		public void startGame(String gameType) {
 		}
@@ -90,23 +103,9 @@ public class OutOfGameFragment extends SherlockFragment {
 			}
 		});
 
-		// Getting the GameLogicFragment if one exists.
-		GameLogicFragment gameLogic = (GameLogicFragment) getActivity().getSupportFragmentManager()
-				.findFragmentByTag("gameLogic");
-		String gameLogicGameType = "null";
-		boolean gameWonOrLost = false;
-
-		if (gameLogic != null) {
-			gameLogicGameType = gameLogic.getArguments().getString(GameLogicFragment.GAME_TYPE);
-
-			if (gameLogic.isGameWon() || gameLogic.isGameLost()) {
-				gameWonOrLost = true;
-			}
-		}
-
 		// Checking if the GAME_TYPE of the current game matches with the
 		// currently displayed OutOfGameFragment ARM_ITEM_ID.
-		if (gameLogicGameType.equals(getArguments().getString(ARG_ITEM_ID)) && !gameWonOrLost) {
+		if (mGameInit.getGameLogicGameType().equals(getArguments().getString(ARG_ITEM_ID)) && !mGameInit.isGameLostOrWon()) {
 			startGame.setText(R.string.button_resume_game);
 		} else {
 			startGame.setText(R.string.button_start_game);
