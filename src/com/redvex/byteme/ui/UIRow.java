@@ -1,4 +1,4 @@
-package com.redvex.byteme;
+package com.redvex.byteme.ui;
 
 import java.util.ArrayList;
 

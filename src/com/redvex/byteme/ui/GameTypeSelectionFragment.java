@@ -1,4 +1,4 @@
-package com.redvex.byteme;
+package com.redvex.byteme.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
-import com.redvex.byteme.dummy.DummyContent;
+import com.redvex.byteme.ui.dummy.DummyContent;
 
 /**
  * A list fragment representing a list of Game Types. This fragment also

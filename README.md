@@ -6,8 +6,6 @@ Cisco Binary Game http://forums.cisco.com/CertCom/game/binary_game_page.htm .
 It was initiated by Anuroth and illmat as a contribution to
 http://opensecuritytraining.info/ .
 
-Latest build before the last commit: http://anuroth.org/software/Android/ByteMe/ByteMe.apk
-
 Usage:
 ------
 The application uses ActionBarSherlock to implement the actionbar.

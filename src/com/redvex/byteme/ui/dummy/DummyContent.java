@@ -1,4 +1,4 @@
-package com.redvex.byteme.dummy;
+package com.redvex.byteme.ui.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

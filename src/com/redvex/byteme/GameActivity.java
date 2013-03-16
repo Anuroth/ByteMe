@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.redvex.byteme.gamelogic.GameLogicFragment;
+import com.redvex.byteme.ui.GameLostDialogFragment;
+import com.redvex.byteme.ui.GameTypeSelectionFragment;
+import com.redvex.byteme.ui.GameWonDialogFragment;
+import com.redvex.byteme.ui.InGameFragment;
+import com.redvex.byteme.ui.OutOfGameFragment;
+import com.redvex.byteme.ui.UIRow;
 
 import android.content.Intent;
 import android.os.Bundle;

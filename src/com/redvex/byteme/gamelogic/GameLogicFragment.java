@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.redvex.byteme.UIRow;
 import com.redvex.byteme.gamelogic.Helper.*;
+import com.redvex.byteme.ui.UIRow;
 
 import android.app.Activity;
 import android.os.Bundle;

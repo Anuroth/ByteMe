@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/game_type_selection"
-        android:name="com.redvex.byteme.GameTypeSelectionFragment"
+        android:name="com.redvex.byteme.ui.GameTypeSelectionFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

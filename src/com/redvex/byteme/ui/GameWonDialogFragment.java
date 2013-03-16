@@ -1,4 +1,4 @@
-package com.redvex.byteme;
+package com.redvex.byteme.ui;
 
 import java.util.ArrayList;
 
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.redvex.byteme.R;
 
 /**
  * A DialogFragment which is shown when the game is won.
@@ -22,7 +23,7 @@ public class GameWonDialogFragment extends SherlockDialogFragment {
 	 * Creating a new instance of GameWonDialogFragment with totalScore,
 	 * rowScore and levelScore as arguments.
 	 */
-	static GameWonDialogFragment newInstance(int totalScore, int rowScore,
+	public static GameWonDialogFragment newInstance(int totalScore, int rowScore,
 			ArrayList<Integer> levelScore) {
 		GameWonDialogFragment wonScreen = new GameWonDialogFragment();
 

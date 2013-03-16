@@ -1,4 +1,4 @@
-package com.redvex.byteme;
+package com.redvex.byteme.ui;
 
 import java.util.ArrayList;
 
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.redvex.byteme.R;
 
 /**
  * A DialogFragment which is shown when the game is lost.
@@ -22,7 +23,7 @@ public class GameLostDialogFragment extends SherlockDialogFragment {
 	 * Creating a new instance of GameLostDialogFragment with level, totalScore,
 	 * rowScore and levelScore as arguments.
 	 */
-	static GameLostDialogFragment newInstance(int level, int totalScore, int rowScore,
+	public static GameLostDialogFragment newInstance(int level, int totalScore, int rowScore,
 			ArrayList<Integer> levelScore) {
 		GameLostDialogFragment lostScreen = new GameLostDialogFragment();
 

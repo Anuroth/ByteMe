@@ -1,4 +1,4 @@
-package com.redvex.byteme;
+package com.redvex.byteme.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.redvex.byteme.GameActivity;
+import com.redvex.byteme.HandsetDeviceGameActivity;
 import com.redvex.byteme.R;
-import com.redvex.byteme.dummy.DummyContent;
 import com.redvex.byteme.gamelogic.GameLogicFragment;
+import com.redvex.byteme.ui.dummy.DummyContent;
 
 /**
  * A fragment representing a single Game detail screen. This fragment is either
