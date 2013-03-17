@@ -6,6 +6,8 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.redvex.byteme.GameActivity;
+import com.redvex.byteme.HandsetDeviceGameActivity;
 import com.redvex.byteme.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -29,6 +31,14 @@ import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 
+/**
+ * A fragment representing the Game field while the game is running.
+ * This fragment is either contained in a {@link GameActivity} in two-pane mode
+ * (on tablets) or a {@link HandsetDeviceGameActivity} on handsets.
+ * <p>
+ * Activities containing this fragment MUST implement the {@link GameLogic}
+ * interface.
+ */
 public class InGameFragment extends SherlockFragment implements OnKeyboardActionListener,
 		OnKeyListener {
 	/**

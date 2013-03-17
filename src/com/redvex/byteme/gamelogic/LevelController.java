@@ -40,6 +40,9 @@ public class LevelController {
 		return mTimeInterval;
 	}
 
+	/**
+	 * Sets which game rows should be fixed and which must be solved.
+	 */
 	public ArrayList<GameField> getFixedValues() {
 		ArrayList<GameField> mFixedValues = new ArrayList<GameField>();
 
@@ -138,6 +141,9 @@ public class LevelController {
 		return mFixedValues;
 	}
 
+	/**
+	 * Sets the values of the LevelController depending on the current level.
+	 */
 	private void assignValues() {
 		switch (mLevel) {
 		case 1:

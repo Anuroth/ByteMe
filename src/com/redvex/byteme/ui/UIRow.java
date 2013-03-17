@@ -3,11 +3,9 @@ package com.redvex.byteme.ui;
 import java.util.ArrayList;
 
 /**
- * @author Anuroth
- * 
- *         This class contains all Strings for a single row. An object of this
- *         class may be used for the communication of the UI handling class and
- *         the game logic class.
+ * This class contains all Strings for a single row. An object of this
+ * class may be used for the communication of the UI handling class and
+ * the game logic class.
  */
 public class UIRow {
 	private ArrayList<String> mBinRow;
@@ -42,6 +40,12 @@ public class UIRow {
 	 *            String containing the decimal row value.
 	 * @param mHexRow
 	 *            String containing the hexadecimal row value.
+	 * @param mFixedBinRow
+	 *            Boolean if the binary row should be fixed and not to be solved.
+	 * @param mFixedDecRow
+	 *            Boolean if the decimal row should be fixed and not to be solved.
+	 * @param mFixedHexRow
+	 *            Boolean if the hexadecimal row should be fixed and not to be solved.
 	 */
 	public UIRow(ArrayList<String> mBinRow, String mDecRow, String mHexRow, boolean mFixedBinRow,
 			boolean mFixedDecRow, boolean mFixedHexRow) {
@@ -54,17 +58,10 @@ public class UIRow {
 		this.mFixedHexRow = mFixedHexRow;
 	}
 
-	/**
-	 * @return the binRow
-	 */
 	public ArrayList<String> getBinRow() {
 		return mBinRow;
 	}
 
-	/**
-	 * @param mBinRow
-	 *            the mBinRow to set
-	 */
 	public void setBinRow(ArrayList<String> mbinRow) {
 		this.mBinRow = mbinRow;
 	}
@@ -77,17 +74,10 @@ public class UIRow {
 		this.mFixedBinRow = mFixedBinRow;
 	}
 
-	/**
-	 * @return the mDecRow
-	 */
 	public String getDecRow() {
 		return mDecRow;
 	}
 
-	/**
-	 * @param mDecRow
-	 *            the mDecRow to set
-	 */
 	public void setDecRow(String mDecRow) {
 		this.mDecRow = mDecRow;
 	}
@@ -100,17 +90,10 @@ public class UIRow {
 		this.mFixedDecRow = mFixedDecRow;
 	}
 
-	/**
-	 * @return the mHexRow
-	 */
 	public String getHexRow() {
 		return mHexRow;
 	}
 
-	/**
-	 * @param mHexRow
-	 *            the mHexRow to set
-	 */
 	public void setHexRow(String mHexRow) {
 		this.mHexRow = mHexRow;
 	}

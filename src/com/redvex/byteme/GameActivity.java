@@ -23,12 +23,9 @@ import android.support.v4.app.FragmentManager;
  * activity presents the list of items and item details side-by-side using two
  * vertical panes.
  * <p>
- * The activity makes heavy use of fragments. The list of items is a
- * {@link GameListFragment} and the item details (if present) is a
- * {@link GameDetailFragment}.
- * <p>
- * This activity also implements the required {@link GameListFragment.Callbacks}
- * interface to listen for item selections.
+ * The activity makes heavy use of fragments. The list of game types is a
+ * {@link GameTypeSelectionFragment} and the game field (if present) is a
+ * {@link OutOfGameFragment/InGameFragment}.
  */
 public class GameActivity extends SherlockFragmentActivity implements
 		GameTypeSelectionFragment.Callbacks, OutOfGameFragment.GameInit, InGameFragment.GameLogic,

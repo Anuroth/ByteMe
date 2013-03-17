@@ -15,9 +15,12 @@ import com.redvex.byteme.R;
 import com.redvex.byteme.ui.dummy.DummyContent;
 
 /**
- * A fragment representing a single Game detail screen. This fragment is either
- * contained in a {@link GameActivity} in two-pane mode (on tablets) or a
- * {@link HandsetDeviceGameActivity} on handsets.
+ * A fragment representing the Game field while the game isn't running.
+ * This fragment is either contained in a {@link GameActivity} in two-pane mode
+ * (on tablets) or a {@link HandsetDeviceGameActivity} on handsets.
+ * <p>
+ * Activities containing this fragment MUST implement the {@link GameInit}
+ * interface.
  */
 public class OutOfGameFragment extends SherlockFragment {
 	/**
@@ -39,9 +42,9 @@ public class OutOfGameFragment extends SherlockFragment {
 
 	public interface GameInit {
 		public boolean isGameLostOrWon();
-		
+
 		public String getGameLogicGameType();
-		
+
 		public void startGame(String gameType);
 	}
 
@@ -54,12 +57,12 @@ public class OutOfGameFragment extends SherlockFragment {
 		public boolean isGameLostOrWon() {
 			return false;
 		}
-		
+
 		@Override
 		public String getGameLogicGameType() {
 			return "null";
 		}
-		
+
 		@Override
 		public void startGame(String gameType) {
 		}
@@ -105,7 +108,8 @@ public class OutOfGameFragment extends SherlockFragment {
 
 		// Checking if the GAME_TYPE of the current game matches with the
 		// currently displayed OutOfGameFragment ARM_ITEM_ID.
-		if (mGameInit.getGameLogicGameType().equals(getArguments().getString(ARG_ITEM_ID)) && !mGameInit.isGameLostOrWon()) {
+		if (mGameInit.getGameLogicGameType().equals(getArguments().getString(ARG_ITEM_ID))
+				&& !mGameInit.isGameLostOrWon()) {
 			startGame.setText(R.string.button_resume_game);
 		} else {
 			startGame.setText(R.string.button_start_game);

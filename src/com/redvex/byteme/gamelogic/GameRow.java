@@ -31,6 +31,8 @@ public class GameRow {
 			mRange = 256;
 		}
 
+		// There are as long values for the bin/dec/hex row generated and
+		// assigned, until every field contains different values.
 		mBin = mRandom.nextInt(mRange);
 
 		do {
@@ -42,9 +44,13 @@ public class GameRow {
 		} while (mBin == mHex || mDec == mHex);
 
 		if (mFixedValues.size() < 3) {
+			// Since there are just three fields (bin/dec/hex) the number of
+			// fixed values must be below three.
 			this.mFixedValues = mFixedValues;
 
 			if (mFixedValues.size() > 1) {
+				// If more than one field is fixed they must contain the same
+				// value.
 				if (mFixedValues.contains(GameField.Bin) && mFixedValues.contains(GameField.Dec)) {
 					mBin = mDec;
 				} else if (mFixedValues.contains(GameField.Bin)
