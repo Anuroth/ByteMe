@@ -625,7 +625,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				if (y < 0) {
 					y += heightKeyboard + heightTextView;
 				}
-			} else if (y < heightKeyboard) {
+			} else if (y < 0) {
 				y += heightKeyboard + heightTextView;
 			}
 
