@@ -723,6 +723,10 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		
+		if (savedInstanceState != null) {
+			mActionbarPaused = savedInstanceState.getBoolean("mActionbarPaused", false);
+		}
 	}
 
 	/**
@@ -765,6 +769,12 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 		return rootView;
 	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean("mActionbarPaused", mActionbarPaused);
+	}
 
 	/**
 	 * The UI row objects and the keyboards are initiated and the game logic is
@@ -776,17 +786,17 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 		KeyguardManager keyguardManager = (KeyguardManager) getActivity().getApplication()
 				.getSystemService(Context.KEYGUARD_SERVICE);
 
-		if (!keyguardManager.inKeyguardRestrictedInputMode()) {
-			// Just if the screen is unlocked the game is started.
-			initiateKeyboards();
-			initiateUIRows();
-			mGameLogic.startGameLogic(getArguments().getString(GAME_TYPE));
-		} else {
+		if (keyguardManager.inKeyguardRestrictedInputMode() || mActionbarPaused) {
 			// The user has to resume the game manually.
 			getActivity().findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
 			setKeyboardsInvisible();
 			mActionbarPaused = true;
 			getSherlockActivity().invalidateOptionsMenu();
+		} else {
+			// Just if the screen is unlocked the game is started.
+			initiateKeyboards();
+			initiateUIRows();
+			mGameLogic.startGameLogic(getArguments().getString(GAME_TYPE));
 		}
 	}
 
