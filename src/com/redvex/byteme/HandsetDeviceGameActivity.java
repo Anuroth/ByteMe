@@ -115,8 +115,8 @@ public class HandsetDeviceGameActivity extends SherlockFragmentActivity implemen
 					// Pause game.
 					pauseResume.setText(getString(R.string.actionbar_resume));
 					pauseGameLogic();
-					findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
 					fragment.setKeyboardsInvisible();
+					findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
 				} else {
 					// Resume game.
 					pauseResume.setText(getString(R.string.actionbar_pause));

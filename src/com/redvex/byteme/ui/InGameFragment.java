@@ -602,8 +602,6 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			UIRow row = new UIRow(binRowStrings, decRowString, hexRowString, fixedBinRow,
 					fixedDecRow, fixedHexRow);
 			mGameLogic.updateRow(index, row);
-		} else {
-			throw new IndexOutOfBoundsException("Unable to identify the edited row.");
 		}
 	}
 

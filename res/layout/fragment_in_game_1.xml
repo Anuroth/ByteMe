@@ -10,20 +10,18 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:baselineAligned="false"
-        android:weightSum="12" >
+        android:weightSum="13" >
         
-	    <LinearLayout
+	    <android.support.v7.widget.Space
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="1"
-	        android:orientation="vertical" >
-	    </LinearLayout>
+	        android:layout_weight="1" />
 	    
 	    <LinearLayout
 	        android:id="@+id/in_game_1_binary"
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="7"
+	        android:layout_weight="8"
 	        android:background="#4A4A4A"
 	        android:gravity="bottom"
 	        android:weightSum="10"
@@ -41,17 +39,14 @@
 	        android:orientation="vertical" >
 	    </LinearLayout>
 	    
-	    <LinearLayout
+	    <android.support.v7.widget.Space
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="1"
-	        android:orientation="vertical" >
-	    </LinearLayout>
+	        android:layout_weight="1" />
     
     </LinearLayout>
     
     <android.inputmethodservice.KeyboardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/keyboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

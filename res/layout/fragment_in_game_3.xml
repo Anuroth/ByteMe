@@ -10,14 +10,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:baselineAligned="false"
-        android:weightSum="12" >
+        android:weightSum="13" >
 
-	    <LinearLayout
+
+	    <android.support.v7.widget.Space
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="3.5"
-	        android:orientation="vertical" >
-	    </LinearLayout>
+	        android:layout_weight="4" />
 	    
 	    <LinearLayout
 	        android:id="@+id/in_game_3_hexadecimal"
@@ -41,17 +40,14 @@
 	        android:orientation="vertical" >
 	    </LinearLayout>
 	    
-	    <LinearLayout
+	    <android.support.v7.widget.Space
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="3.5"
-	        android:orientation="vertical" >
-	    </LinearLayout>
+	        android:layout_weight="4" />
 	    
 	</LinearLayout>
     
     <android.inputmethodservice.KeyboardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/keyboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
