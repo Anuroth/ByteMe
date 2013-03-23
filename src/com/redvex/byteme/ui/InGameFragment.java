@@ -32,9 +32,9 @@ import android.widget.TextView;
 import android.widget.LinearLayout;
 
 /**
- * A fragment representing the Game field while the game is running.
- * This fragment is either contained in a {@link GameActivity} in two-pane mode
- * (on tablets) or a {@link HandsetDeviceGameActivity} on handsets.
+ * A fragment representing the Game field while the game is running. This
+ * fragment is either contained in a {@link GameActivity} in two-pane mode (on
+ * tablets) or a {@link HandsetDeviceGameActivity} on handsets.
  * <p>
  * Activities containing this fragment MUST implement the {@link GameLogic}
  * interface.
@@ -126,6 +126,15 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 	public void setKeyboardsInvisible() {
 		mKeyboardView.setVisibility(View.INVISIBLE);
+
+		if (mCurrentTextView != null) {
+			// The update of the row is sent to the GameLogic.
+			if (mKeyboardView.getKeyboard().equals(mKeyboardDec)) {
+				updateRow(sDecimalRow.indexOf(mCurrentTextView));
+			} else if (mKeyboardView.getKeyboard().equals(mKeyboardHex)) {
+				updateRow(sHexadecimalRow.indexOf(mCurrentTextView));
+			}
+		}
 	}
 
 	/**
@@ -142,7 +151,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 * @param binField
 	 *            The LinearLayout the new binary row should be displayed in.
 	 * @param binText
-	 *            An ArrayList<String> containing the Strings for the Text of the row.
+	 *            An ArrayList<String> containing the Strings for the Text of
+	 *            the row.
 	 * @param fixedBinRow
 	 *            A boolean determining if the row should be enabled or
 	 *            disabled. Set to false if the row should be enabled.
@@ -172,13 +182,14 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 				newBinTextView.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View view) {
-						TextView clickedBinTextView = (TextView) view;
-
 						// If the keyboard of a decimal or hexadecimal row is
-						// visible it's set to View.INVISIBLE.
+						// visible it's set to invisible and the updates made at
+						// the row are send to the GameLogic.
 						if (mKeyboardView.getVisibility() == View.VISIBLE) {
 							setKeyboardsInvisible();
 						}
+
+						TextView clickedBinTextView = (TextView) view;
 
 						// The current bit is swapped.
 						if (clickedBinTextView.getText().toString().equals("0")) {
@@ -231,6 +242,13 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 			newDecRow.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View view) {
+					// If the keyboard of a hexadecimal row is visible it's set
+					// to invisible and the updates made at the row are send to
+					// the GameLogic.
+					if (mKeyboardView.getVisibility() == View.VISIBLE) {
+						setKeyboardsInvisible();
+					}
+
 					// Getting the TextView
 					mCurrentTextView = (TextView) view;
 
@@ -284,6 +302,13 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 			newHexRow.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View view) {
+					// If the keyboard of a decimal row is visible it's set to
+					// invisible and the updates made at the row are send to the
+					// GameLogic.
+					if (mKeyboardView.getVisibility() == View.VISIBLE) {
+						setKeyboardsInvisible();
+					}
+
 					// Getting the TextView
 					mCurrentTextView = (TextView) view;
 
@@ -723,7 +748,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		
+
 		if (savedInstanceState != null) {
 			mActionbarPaused = savedInstanceState.getBoolean("mActionbarPaused", false);
 		}
@@ -769,7 +794,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 		return rootView;
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -818,25 +843,16 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 		switch (arg0) {
 		case -5:
 			// If the Text field of mCurrentTextView contains characters the
-			// last
-			// one gets deleted.
+			// last one gets deleted.
 			if (mCurrentTextView.getText().toString().length() > 0) {
 				mCurrentTextView.setText(mCurrentTextView.getText().toString()
 						.substring(0, mCurrentTextView.getText().toString().length() - 1));
 			}
 			break;
 		case 10:
-			// The visibility of the keyboard is set to View.INVISIBLE if the
-			// user presses 'Enter'.
+			// The keyboard is set to invisible and the updates of the row are
+			// send to the GameLogic if the user presses 'Enter'.
 			setKeyboardsInvisible();
-
-			// The update of the row is sent to the GameLogic.
-			if (mKeyboardView.getKeyboard().equals(mKeyboardDec)) {
-				updateRow(sDecimalRow.indexOf(mCurrentTextView));
-			} else if (mKeyboardView.getKeyboard().equals(mKeyboardHex)) {
-				updateRow(sHexadecimalRow.indexOf(mCurrentTextView));
-			}
-
 			break;
 		default:
 			if (mKeyboardView.getKeyboard().equals(mKeyboardDec)) {
