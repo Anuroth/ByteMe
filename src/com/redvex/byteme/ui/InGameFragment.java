@@ -3,6 +3,7 @@ package com.redvex.byteme.ui;
 import java.util.ArrayList;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -609,6 +610,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 * moveKeyboard moves the keyboard to the currently active and receiving
 	 * view.
 	 */
+	@SuppressLint("NewApi")
 	private void moveKeyboard() {
 		if (mCurrentTextView != null) {
 			float widthTextView = (float) mCurrentTextView.getWidth();
@@ -627,25 +629,28 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				heightKeyboard = (float) mKeyboardHex.getHeight();
 			}
 
-			// Default is to expand the keyboard to the right top.
-			// The x value is made up of the x position of the mCurrentTextView.
-			// Since
-			// this TextView is embedded in a LinearLayout, the x position of
-			// the
+			// Default is to expand the keyboard to the right top. The x value
+			// is made up of the x position of the mCurrentTextView. Since this
+			// TextView is embedded in a LinearLayout, the x position of the
 			// LinearLayout has to be added to the x value of the
+			// mCurrentTextView. Now x is at the beginning of the
+			// mCurrentTextView. To position the keyboard in the middle of the
+			// TextView half the width has to be added. To position the bottom
+			// of the keyboard at the top of mCurrentTextView the height of the
+			// keyboard has to be subtracted from the y position of
 			// mCurrentTextView.
-			// Now x is at the beginning of the mCurrentTextView. To position
-			// the
-			// keyboard in the middle of the TextView half the width has to be
-			// added.
-			// To position the bottom of the keyboard at the top of
-			// mCurrentTextView
-			// the height of the keyboard has to be subtracted from the y
-			// position
-			// of mCurrentTextView.
-			float x = mCurrentTextView.getX()
-					+ ((LinearLayout) mCurrentTextView.getParent()).getX() + (widthTextView / 2);
-			float y = mCurrentTextView.getY() - heightKeyboard;
+			float x;
+			float y;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				x = mCurrentTextView.getX() + ((LinearLayout) mCurrentTextView.getParent()).getX()
+						+ (widthTextView / 2);
+				y = mCurrentTextView.getY() - heightKeyboard;
+			} else {
+				x = (float) mCurrentTextView.getLeft()
+						+ (float) ((LinearLayout) mCurrentTextView.getParent()).getLeft()
+						+ (widthTextView / 2);
+				y = (float) mCurrentTextView.getTop() - heightKeyboard;
+			}
 
 			// Checks if the left/right expansion of the keyboard has to be
 			// changed
@@ -662,8 +667,13 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				y += heightKeyboard + heightTextView;
 			}
 
-			mKeyboardView.setX(x);
-			mKeyboardView.setY(y);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				mKeyboardView.setX(x);
+				mKeyboardView.setY(y);
+			} else {
+				mKeyboardView.setLeft((int) x);
+				mKeyboardView.setTop((int) y);
+			}
 		}
 	}
 
@@ -672,16 +682,19 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 		inflater.inflate(R.menu.actionbar, menu);
 	}
 
+	@SuppressLint("NewApi")
 	public void updateActionbarLevel(int level) {
 		mActionbarLevel = getString(R.string.actionbar_level) + Integer.toString(level);
 		getSherlockActivity().invalidateOptionsMenu();
 	}
 
+	@SuppressLint("NewApi")
 	public void updateActionbarScore(int score) {
 		mActionbarScore = getString(R.string.actionbar_score) + Integer.toString(score);
 		getSherlockActivity().invalidateOptionsMenu();
 	}
 
+	@SuppressLint("NewApi")
 	public void updateActionbarLinesLeft(int linesLeft) {
 		mActionbarLinesLeft = getString(R.string.actionbar_lines_left)
 				+ Integer.toString(linesLeft);
@@ -803,6 +816,7 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	 * The UI row objects and the keyboards are initiated and the game logic is
 	 * started.
 	 */
+	@SuppressLint("NewApi")
 	@Override
 	public void onStart() {
 		super.onStart();
