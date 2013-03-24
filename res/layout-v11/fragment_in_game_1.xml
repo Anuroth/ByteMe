@@ -11,18 +11,17 @@
         android:orientation="horizontal"
         android:baselineAligned="false"
         android:weightSum="13" >
-
-
+        
 	    <android.support.v7.widget.Space
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="4" />
+	        android:layout_weight="1" />
 	    
 	    <LinearLayout
-	        android:id="@+id/in_game_3_hexadecimal"
+	        android:id="@+id/in_game_1_binary"
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="2"
+	        android:layout_weight="8"
 	        android:background="#4A4A4A"
 	        android:gravity="bottom"
 	        android:weightSum="10"
@@ -30,7 +29,7 @@
 	    </LinearLayout>
 	
 	    <LinearLayout
-	        android:id="@+id/in_game_3_decimal"
+	        android:id="@+id/in_game_1_decimal"
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="3"
@@ -43,27 +42,17 @@
 	    <android.support.v7.widget.Space
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="4" />
-	    
-	</LinearLayout>
-    
-    <!--
-        Due to a bug in Android the keyboard is wrapped in a LinearLayout.
-    -->
-    
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-	    
-	    <android.inputmethodservice.KeyboardView
-	        android:id="@+id/keyboard"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:visibility="visible"
-	        android:focusable="true"
-	        android:focusableInTouchMode="true"
-	        />
+	        android:layout_weight="1" />
     
     </LinearLayout>
+    
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/keyboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
 
 </RelativeLayout>

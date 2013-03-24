@@ -12,61 +12,47 @@
         android:baselineAligned="false"
         android:weightSum="13" >
 
+	    <android.support.v7.widget.Space
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1.5" />
+	    
 	    <LinearLayout
-	        android:id="@+id/in_game_4_binary"
+	        android:id="@+id/in_game_2_binary"
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="8"
 	        android:background="#4A4A4A"
 	        android:gravity="bottom"
-	        android:orientation="vertical"
-	        android:weightSum="10" >
-
+	        android:weightSum="10"
+	        android:orientation="vertical" >
 	    </LinearLayout>
-	    
+	
 	    <LinearLayout
-	        android:id="@+id/in_game_4_hexadecimal"
+	        android:id="@+id/in_game_2_hexadecimal"
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="2"
 	        android:background="#3A3A3A"
 	        android:gravity="bottom"
-	        android:orientation="vertical"
-	        android:weightSum="10" >
-
+	        android:weightSum="10"
+	        android:orientation="vertical" >
 	    </LinearLayout>
-	
-	    <LinearLayout
-	        android:id="@+id/in_game_4_decimal"
+	    
+	    <android.support.v7.widget.Space
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="3"
-	        android:background="#4A4A4A"
-	        android:gravity="bottom"
-	        android:orientation="vertical"
-	        android:weightSum="10" >
-
-	    </LinearLayout>
-	    
-	</LinearLayout>
-    
-    <!--
-        Due to a bug in Android the keyboard is wrapped in a LinearLayout.
-    -->
-    
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-	    
-	    <android.inputmethodservice.KeyboardView
-	        android:id="@+id/keyboard"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:visibility="visible"
-	        android:focusable="true"
-	        android:focusableInTouchMode="true"
-	        />
+	        android:layout_weight="1.5" />
     
     </LinearLayout>
+    
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/keyboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
 
 </RelativeLayout>

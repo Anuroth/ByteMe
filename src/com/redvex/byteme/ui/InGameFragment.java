@@ -671,8 +671,14 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				mKeyboardView.setX(x);
 				mKeyboardView.setY(y);
 			} else {
-				mKeyboardView.setLeft((int) x);
-				mKeyboardView.setTop((int) y);
+				int left = (int) x;
+				int top = (int) y;
+				int right = left + (int) widthKeyboard;
+				int bottom = top + (int) heightKeyboard;
+				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+						(int) widthKeyboard, (int) heightKeyboard);
+				layoutParams.setMargins(left, top, right, bottom);
+				mKeyboardView.setLayoutParams(layoutParams);
 			}
 		}
 	}
