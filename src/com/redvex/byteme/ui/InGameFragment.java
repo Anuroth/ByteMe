@@ -639,17 +639,22 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			// of the keyboard at the top of mCurrentTextView the height of the
 			// keyboard has to be subtracted from the y position of
 			// mCurrentTextView.
-			float x;
-			float y;
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				x = mCurrentTextView.getX() + ((LinearLayout) mCurrentTextView.getParent()).getX()
-						+ (widthTextView / 2);
-				y = mCurrentTextView.getY() - heightKeyboard;
-			} else {
-				x = (float) mCurrentTextView.getLeft()
-						+ (float) ((LinearLayout) mCurrentTextView.getParent()).getLeft()
-						+ (widthTextView / 2);
-				y = (float) mCurrentTextView.getTop() - heightKeyboard;
+			float x = 0;
+			float y = 0;
+
+			try {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					x = mCurrentTextView.getX() + ((LinearLayout) mCurrentTextView.getParent()).getX()
+							+ (widthTextView / 2);
+					y = mCurrentTextView.getY() - heightKeyboard;
+				} else {
+					x = (float) mCurrentTextView.getLeft()
+							+ (float) ((LinearLayout) mCurrentTextView.getParent()).getLeft()
+							+ (widthTextView / 2);
+					y = (float) mCurrentTextView.getTop() - heightKeyboard;
+				} 
+			}catch (NullPointerException e) {
+				setKeyboardsInvisible();
 			}
 
 			// Checks if the left/right expansion of the keyboard has to be
@@ -735,8 +740,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				mActionbarPaused = true;
 				item.setTitle(getString(R.string.actionbar_resume));
 				mGameLogic.pauseGameLogic();
-				getActivity().findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
 				setKeyboardsInvisible();
+				getActivity().findViewById(R.id.game_field).setVisibility(View.INVISIBLE);
 			} else {
 				// Resume game.
 				mActionbarPaused = false;
