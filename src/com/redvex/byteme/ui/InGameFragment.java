@@ -426,6 +426,29 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 	public void removeUIRow(int index) {
 		try {
 			if (getArguments().containsKey(GAME_TYPE)) {
+				if (mCurrentTextView != null) {
+					mCurrentTextView.getViewTreeObserver().addOnGlobalLayoutListener(
+							new ViewTreeObserver.OnGlobalLayoutListener() {
+								@SuppressLint("NewApi")
+								@Override
+								public void onGlobalLayout() {
+									if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+										mCurrentTextView.getViewTreeObserver()
+												.removeOnGlobalLayoutListener(this);
+									} else {
+										mCurrentTextView.getViewTreeObserver()
+												.removeGlobalOnLayoutListener(this);
+									}
+
+									// The keyboard gets adjusted since the row
+									// receiving the keyboard input may be displayed
+									// at a new position.
+									if (mKeyboardView.getVisibility() == View.VISIBLE) {
+										moveKeyboard();
+									}
+								}
+							});
+				}
 
 				LinearLayout binField;
 				LinearLayout decField;
