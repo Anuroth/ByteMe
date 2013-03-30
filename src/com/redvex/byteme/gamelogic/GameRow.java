@@ -31,9 +31,15 @@ public class GameRow {
 			mRange = 256;
 		}
 
-		// There are as long values for the bin/dec/hex row generated and
+		// The values for the bin/dec/hex row are generated and
 		// assigned, until every field contains different values.
-		mBin = mRandom.nextInt(mRange);
+		if (mFixedValues.contains(GameField.Bin)) {
+			mBin = mRandom.nextInt(mRange);
+		} else {
+			// If the binary row has to be solved every bit is filled with
+			// zeros.
+			mBin = 0;
+		}
 
 		do {
 			mDec = mRandom.nextInt(mRange);
