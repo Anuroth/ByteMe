@@ -16,6 +16,7 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
@@ -173,6 +174,14 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				newBinTextView.setLayoutParams(new LinearLayout.LayoutParams(0,
 						LayoutParams.MATCH_PARENT, 1.0f));
 				newBinTextView.setGravity(Gravity.CENTER);
+				// Currently just the binary row uses the encom-webfont as an
+				// example implementation. I'd suggest, when the graphics are
+				// done, the best solution would be a custom TextView/Button
+				// which uses the font directly.
+				// http://www.tron-sector.com/forums/default.aspx?a=top&id=427914
+				// http://disneydigitalbooks.go.com/tron/fonts/encom-webfont.ttf
+				newBinTextView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),
+						"fonts/encom-webfont.ttf"));
 
 				try {
 					newBinTextView.setText(binText.get(i));
@@ -441,8 +450,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 									}
 
 									// The keyboard gets adjusted since the row
-									// receiving the keyboard input may be displayed
-									// at a new position.
+									// receiving the keyboard input may be
+									// displayed at a new position.
 									if (mKeyboardView.getVisibility() == View.VISIBLE) {
 										moveKeyboard();
 									}
@@ -667,7 +676,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 
 			try {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					x = mCurrentTextView.getX() + ((LinearLayout) mCurrentTextView.getParent()).getX()
+					x = mCurrentTextView.getX()
+							+ ((LinearLayout) mCurrentTextView.getParent()).getX()
 							+ (widthTextView / 2);
 					y = mCurrentTextView.getY() - heightKeyboard;
 				} else {
@@ -675,8 +685,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 							+ (float) ((LinearLayout) mCurrentTextView.getParent()).getLeft()
 							+ (widthTextView / 2);
 					y = (float) mCurrentTextView.getTop() - heightKeyboard;
-				} 
-			}catch (NullPointerException e) {
+				}
+			} catch (NullPointerException e) {
 				setKeyboardsInvisible();
 			}
 

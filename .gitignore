@@ -31,7 +31,6 @@ local.properties
 ## Android
 #################
 
-assets/
 bin/classes/
 bin/dexedLibs/
 bin/res/
