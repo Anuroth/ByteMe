@@ -399,6 +399,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 			default:
 				throw new IllegalStateException("No valid game type in GAME_TYPE.");
 			}
+			// Re-draw the game field
+			((LinearLayout) getActivity().findViewById(R.id.game_field)).invalidate();
 
 			if (mCurrentTextView != null) {
 				mCurrentTextView.getViewTreeObserver().addOnGlobalLayoutListener(
@@ -515,6 +517,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 					throw new IllegalStateException("No valid game type in GAME_TYPE.");
 				}
 			}
+			// Re-draw the game field
+			((LinearLayout) getActivity().findViewById(R.id.game_field)).invalidate();
 		} catch (IndexOutOfBoundsException e) {
 			throw new IndexOutOfBoundsException(e.getMessage());
 		}
@@ -582,6 +586,8 @@ public class InGameFragment extends SherlockFragment implements OnKeyboardAction
 				throw new IllegalStateException("No valid game type in GAME_TYPE.");
 			}
 		}
+		// Re-draw the game field
+		((LinearLayout) getActivity().findViewById(R.id.game_field)).invalidate();
 	}
 
 	/**
